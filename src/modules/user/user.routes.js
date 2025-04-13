@@ -16,7 +16,7 @@ routes.get('/:userId',
   userControllers.getOneUser
 );
 
-routes.post('/sign-up',
+authRoutes.post('/sign-up',
   validatorHandler(signUpSchema, 'body'),
   userControllers.createUser
 );
