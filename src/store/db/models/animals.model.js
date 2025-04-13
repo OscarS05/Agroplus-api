@@ -89,7 +89,7 @@ class Animal extends Model {
       sequelize,
       tableName: ANIMAL_TABLE,
       modelName: 'Animal',
-      timestamp: false
+      timestamps: false
     }
   }
 }

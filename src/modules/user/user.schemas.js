@@ -15,7 +15,13 @@ const signUpSchema = Joi.object({
   password: password.required(),
 });
 
+const loginSchema = Joi.object({
+  email: email.required(),
+  password: password.required(),
+});
+
 module.exports = {
   userIdSchema,
   signUpSchema,
+  loginSchema,
 };

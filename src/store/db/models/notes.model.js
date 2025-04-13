@@ -47,7 +47,7 @@ class Note extends Model {
       sequelize,
       tableName: NOTES_TABLE,
       modelName: 'Note',
-      timestamp: false
+      timestamps: false
     }
   }
 }

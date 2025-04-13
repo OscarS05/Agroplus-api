@@ -47,7 +47,7 @@ class Deworming extends Model {
       sequelize,
       tableName: DEWORMING_TABLE,
       modelName: 'Deworming',
-      timestamp: false
+      timestamps: false
     }
   }
 }

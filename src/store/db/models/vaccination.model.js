@@ -47,7 +47,7 @@ class Vaccination extends Model {
       sequelize,
       tableName: VACCINATION_TABLE,
       modelName: 'Animal',
-      timestamp: false
+      timestamps: false
     }
   }
 }

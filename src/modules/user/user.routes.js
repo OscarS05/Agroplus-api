@@ -1,19 +1,29 @@
 const express = require('express');
 const routes = express.Router();
+const authRoutes = express.Router();
 
 const { validatorHandler } = require('../../middlewares/validator.handler');
-const { userIdSchema, signUpSchema } = require('./user.schemas');
+const { userIdSchema, signUpSchema, loginSchema } = require('./user.schemas');
 
 const userControllers = require('./user.controllers');
+
+routes.get('/',
+  userControllers.getAllUsers
+);
 
 routes.get('/:userId',
   validatorHandler(userIdSchema, 'params'),
   userControllers.getOneUser
 );
 
-routes.post('/',
+routes.post('/sign-up',
   validatorHandler(signUpSchema, 'body'),
   userControllers.createUser
+);
+
+authRoutes.post('/login',
+  validatorHandler(loginSchema, 'body'),
+  userControllers.login
 );
 
 routes.patch('/:userId',
@@ -21,4 +31,4 @@ routes.patch('/:userId',
   userControllers.updateUser
 );
 
-module.exports = routes;
+module.exports = { routes, authRoutes };
