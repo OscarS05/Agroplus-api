@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const { ANIMAL_TABLE } = require('./animals.model');
 
 const VACCINATION_TABLE = 'vaccionations';
@@ -37,7 +37,7 @@ const VaccinationSchema = {
   },
 }
 
-class Vaccination {
+class Vaccination extends Model {
   static associate(models) {
 
   }

@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const { USER_TABLE } = require('./user.model');
 
 const ANIMAL_TABLE = 'animals';
@@ -79,7 +79,7 @@ const AnimalSchema = {
   }
 }
 
-class Animal {
+class Animal extends Model {
   static associate(models) {
 
   }
