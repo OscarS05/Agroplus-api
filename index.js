@@ -6,13 +6,13 @@ const path = require('path');
 const { config } = require('./config/config');
 const { routerApi } = require('./src/modules/routes');
 
-const port = config.port || 3000;
 const app = express();
+const port = config.port || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
 
-const whiteList = [config.urlFront];
+const whiteList = [config.urlFront]; //esto es localhost:5500
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -32,10 +32,9 @@ routerApi(app);
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(publicPath, 'index.html'));
-// });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 // app.use(logErrors);
 // app.use(ormErrorHandler);
