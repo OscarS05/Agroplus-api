@@ -1,5 +1,5 @@
 require('dotenv').config();
- 
+
 const config = {
     env: process.env.NODE_ENV || 'development',
     isProd: process.env.NODE_ENV === 'production',
@@ -10,6 +10,7 @@ const config = {
     dbName: process.env.DB_NAME,
     dbUrl: process.env.DB_URL,
     urlFront: process.env.URL_FRONT,
+    jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
 }
- 
+
  module.exports = { config };

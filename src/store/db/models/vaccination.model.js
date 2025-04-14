@@ -46,7 +46,7 @@ class Vaccination extends Model {
     return {
       sequelize,
       tableName: VACCINATION_TABLE,
-      modelName: 'Animal',
+      modelName: 'Vaccination',
       timestamps: false
     }
   }

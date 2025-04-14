@@ -1,5 +1,6 @@
 const Boom = require('@hapi/boom');
 
+const cookieHelpers = require('../../helpers/cookieHelper');
 const userService = require('./user.service');
 
 const getAllUsers = async (req, res, next) => {
@@ -41,10 +42,13 @@ const login = async (req, res, next) => {
   try {
     const userData = req.body;
 
-    const user = await userService.login(userData);
+    const { user, accessToken } = await userService.login(userData);
     if(!user?.id) throw Boom.badRequest('Create user operation returns null');
+    if(!accessToken) throw Boom.unauthorized('Invalid credentials');
 
-    res.status(200).json({ message: 'User authenticated successfully', success: true });
+    cookieHelpers.setCookieAccessToken(res, accessToken);
+
+    res.status(200).json({ message: 'User authenticated successfully', success: true, accessToken });
   } catch (error) {
     next(error);
   }

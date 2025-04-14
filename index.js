@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const { config } = require('./config/config');
+const { logErrors, ormErrorHandler, boomErrorHandler, errorHandler } = require('./src/middlewares/error.handler');
 const { routerApi } = require('./src/modules/routes');
 
 const app = express();
@@ -12,7 +13,7 @@ const port = config.port || 3000;
 app.use(express.json());
 app.use(cookieParser());
 
-const whiteList = [config.urlFront]; //esto es localhost:5500
+const whiteList = [config.urlFront];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -36,10 +37,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
-// app.use(logErrors);
-// app.use(ormErrorHandler);
-// app.use(boomErrorHandler);
-// app.use(errorHandler);
+app.use(logErrors);
+app.use(ormErrorHandler);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server run in PORT: ${port}`);

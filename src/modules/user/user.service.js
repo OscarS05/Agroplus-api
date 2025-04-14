@@ -1,6 +1,8 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+const { config } = require('../../../config/config');
 const userRepository = require('./user.repository');
 
 const getAllUsers = async () => {
@@ -37,12 +39,21 @@ const login = async (userCredentials) => {
   const isMatch = await bcrypt.compare(userCredentials.password, user.password);
   if(!isMatch) throw Boom.unauthorized('The password is incorrect');
 
-  return user;
+  const accessToken = generateToken(user);
+  await userRepository.update(user.id, { token: accessToken });
+
+  return { user, accessToken };
 }
 
-// const getUser = async (userId) => {
-//   return await findOne(userId);
-// }
+const generateToken = (user) => {
+  const payload = {
+    sub: user?.id || user?.sub,
+    role: user.role
+  }
+
+  const accessToken = jwt.sign(payload, config.jwtAccessSecret, { expiresIn: '60m' });
+  return accessToken;
+}
 
 module.exports = {
   getUser,
