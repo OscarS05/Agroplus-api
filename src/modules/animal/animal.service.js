@@ -17,7 +17,7 @@ const createAnimal = async (animalData) => {
     livestockType: animalData.livestockType,
     animalType: animalData.animalType,
     code: animalData.code,
-    name: animalData?.name || null,
+    breed: animalData?.breed || null,
     sex: animalData.sex,
     userId: animalData.userId,
     motherId: animalData?.motherId || null,
@@ -38,9 +38,18 @@ const updateAnimal = async (userId, animalId, animalData) => {
   const formattedAnimalData = {
     livestockType: animalData.livestockType,
     animalType: animalData.animalType,
-    code: animalData.code,
-    name: animalData?.name || null
+    code: animalData.code || null,
+    breed: animalData?.breed || null,
+    sex: animalData?.sex || null,
+    motherId: animalData?.motherId || null,
+    fatherId: animalData?.fatherId || null,
   }
+
+  Object.keys(formattedAnimalData).forEach(key => {
+    if (formattedAnimalData[key] === null) {
+      delete formattedAnimalData[key];
+    }
+  });
 
   const [ updatedRows, [ updatedAnimal ]] = await animalRepository.update(animalId, formattedAnimalData);
   if(!updatedAnimal?.id) throw Boom.badRequest('Something went wrong creating the animal');

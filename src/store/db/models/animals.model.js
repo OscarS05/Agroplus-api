@@ -24,7 +24,7 @@ const AnimalSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  name: {
+  breed: {
     allowNull: true,
     type: DataTypes.STRING,
   },
