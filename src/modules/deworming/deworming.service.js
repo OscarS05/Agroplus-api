@@ -4,7 +4,19 @@ const dewormingRepository = require('./deworming.repository');
 const animalRepository = require('../animal/animal.repository');
 
 const getAllDeworming = async (userId, filters) => {
-  return await dewormingRepository.findAllDewormings(userId, filters);
+  const deworming = await dewormingRepository.findAllDewormings(userId, filters);
+
+  return deworming.map(deworming => formatDeworming(deworming));
+}
+
+const formatDeworming = (vaccination) => {
+  return {
+    id: vaccination.id,
+    vaccine: vaccination.vaccine,
+    description: vaccination.description || null,
+    animalId: vaccination.animalId,
+    registeredAt: vaccination.registeredAt.toISOString().split('T')[0] || vaccination.registeredAt,
+  }
 }
 
 const getDeworming = async (userId, dewormingId) => {
@@ -26,7 +38,7 @@ const createDeworming = async (userId, dewormingData) => {
 
   const newdeworming = await dewormingRepository.create(deworming);
   if(!newdeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-  return newdeworming;
+  return formatDeworming(newdeworming);
 }
 
 const updateDeworming = async (userId, dewormingId, dewormingData) => {
@@ -40,7 +52,7 @@ const updateDeworming = async (userId, dewormingId, dewormingData) => {
 
   const [ updatedRows, [ updatedDeworming ]] = await dewormingRepository.update(dewormingId, formattedDewormingData);
   if(!updatedDeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-  return updatedDeworming;
+  return formatDeworming(updatedDeworming);
 }
 
 const deleteDeworming = async (userId, dewormingId) => {

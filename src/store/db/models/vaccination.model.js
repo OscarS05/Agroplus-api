@@ -10,7 +10,7 @@ const VaccinationSchema = {
     autoIncrement: true,
     type: DataTypes.INTEGER
   },
-  vacuna: {
+  vaccine: {
     allowNull: false,
     type: DataTypes.STRING,
   },
@@ -39,7 +39,10 @@ const VaccinationSchema = {
 
 class Vaccination extends Model {
   static associate(models) {
-
+    this.belongsTo(models.Animal, {
+      as: 'animal',
+      foreignKey: 'animalId'
+    });
   }
 
   static config(sequelize){
