@@ -81,7 +81,9 @@ const AnimalSchema = {
 
 class Animal extends Model {
   static associate(models) {
-
+    this.belongsTo(models.User, { as: 'user' });
+    this.belongsTo(models.Animal, { as: 'mother', foreignKey: 'motherId' });
+    this.belongsTo(models.Animal, { as: 'father', foreignKey: 'fatherId' });
   }
 
   static config(sequelize){

@@ -39,6 +39,7 @@ const DewormingSchema = {
 
 class Deworming extends Model {
   static associate(models) {
+    this.belongsTo(models.Animal, { foreignKey: 'animalId', as: 'animal' });
 
   }
 

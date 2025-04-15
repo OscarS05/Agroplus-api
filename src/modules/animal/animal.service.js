@@ -2,8 +2,22 @@ const Boom = require('@hapi/boom');
 
 const animalRepository = require('./animal.repository');
 
-const getAllAnimals = async (userId) => {
-  return await animalRepository.findAllAnimals(userId);
+const getAllAnimals = async (filters) => {
+  const animals = await animalRepository.findAllAnimals(filters);
+
+  const formattedData = animals.map(animal => ({
+    id: animal.id,
+    livestockType: animal.livestockType,
+    animalType: animal.animalType,
+    code: animal.code,
+    breed: animal.breed,
+    sex: animal.sex,
+    mother: animal.mother || null,
+    father: animal.father || null,
+    registeredAt: animal.registeredAt,
+    birthDate: animal.birthDate,
+  }));
+  return formattedData;
 }
 
 const getAnimal = async (userId, animalId) => {
@@ -23,7 +37,7 @@ const createAnimal = async (animalData) => {
     motherId: animalData?.motherId || null,
     fatherId: animalData?.fatherId || null,
     birthDate: animalData?.birthDate || null,
-    registeredAt: new Date().toISOString(),
+    registeredAt: new Date().toISOString().split('T')[0],
   }
 
   const newAnimal = await animalRepository.create(animal);
@@ -36,20 +50,14 @@ const updateAnimal = async (userId, animalId, animalData) => {
   if(!animal?.id) throw Boom.conflict('Animal does not exists');
 
   const formattedAnimalData = {
-    livestockType: animalData.livestockType,
-    animalType: animalData.animalType,
-    code: animalData.code || null,
-    breed: animalData?.breed || null,
-    sex: animalData?.sex || null,
-    motherId: animalData?.motherId || null,
-    fatherId: animalData?.fatherId || null,
-  }
-
-  Object.keys(formattedAnimalData).forEach(key => {
-    if (formattedAnimalData[key] === null) {
-      delete formattedAnimalData[key];
-    }
-  });
+    ...(animalData.livestockType && { livestockType: animalData.livestockType }),
+    ...(animalData.animalType && { animalType: animalData.animalType }),
+    ...(animalData.code && { code: animalData.code }),
+    ...(animalData.breed && { breed: animalData.breed }),
+    ...(animalData.sex && { sex: animalData.sex }),
+    ...(animalData.motherId && { motherId: animalData.motherId }),
+    ...(animalData.fatherId && { fatherId: animalData.fatherId }),
+  };
 
   const [ updatedRows, [ updatedAnimal ]] = await animalRepository.update(animalId, formattedAnimalData);
   if(!updatedAnimal?.id) throw Boom.badRequest('Something went wrong creating the animal');
