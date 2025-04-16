@@ -39,7 +39,10 @@ const NoteSchema = {
 
 class Note extends Model {
   static associate(models) {
-
+    this.belongsTo(models.User, {
+      as: 'user',
+      foreignKey: 'userId'
+    });
   }
 
   static config(sequelize){

@@ -1,34 +1,34 @@
-// const express = require('express');
-// const routes = express.Router();
+const express = require('express');
+const routes = express.Router();
 
-// const { validateSession } = require('../../middlewares/authentication');
-// const { validatorHandler } = require('../../middlewares/validator.handler');
-// const { createDewormingSchema, dewormingIdSchema, updateDewormingSchema } = require('./deworming.schemas');
+const { validateSession } = require('../../middlewares/authentication');
+const { validatorHandler } = require('../../middlewares/validator.handler');
+const { bodyNotesSchema, notesIdSchema } = require('./notes.schemas');
 
-// const dewormingControllers = require('./deworming.controllers');
+const notesControllers = require('./notes.controllers');
 
-// routes.get('/',
-//   validateSession,
-//   dewormingControllers.getAllDeworming
-// );
+routes.get('/',
+  validateSession,
+  notesControllers.getAllNotes
+);
 
-// routes.post('/',
-//   validateSession,
-//   validatorHandler(createDewormingSchema, 'body'),
-//   dewormingControllers.createDeworming
-// );
+routes.post('/',
+  validateSession,
+  validatorHandler(bodyNotesSchema, 'body'),
+  notesControllers.createNote
+);
 
-// routes.patch('/:dewormingId',
-//   validateSession,
-//   validatorHandler(dewormingIdSchema, 'params'),
-//   validatorHandler(updateDewormingSchema, 'body'),
-//   dewormingControllers.updateDeworming
-// );
+routes.patch('/:noteId',
+  validateSession,
+  validatorHandler(notesIdSchema, 'params'),
+  validatorHandler(bodyNotesSchema, 'body'),
+  notesControllers.updateNote
+);
 
-// routes.delete('/:dewormingId',
-//   validateSession,
-//   validatorHandler(dewormingIdSchema, 'params'),
-//   dewormingControllers.deleteDeworming
-// );
+routes.delete('/:noteId',
+  validateSession,
+  validatorHandler(notesIdSchema, 'params'),
+  notesControllers.deleteNote
+);
 
-// module.exports = routes;
+module.exports = routes;

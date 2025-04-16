@@ -22,7 +22,7 @@ const createUser = async (userData) => {
     email: userData?.email,
     password: await bcrypt.hash(userData?.password, 10),
     role: 'basic',
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toISOString().split('T')[0],
   }
 
   const newUser = await userRepository.create(user);

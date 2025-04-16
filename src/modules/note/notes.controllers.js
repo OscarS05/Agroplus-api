@@ -1,72 +1,72 @@
-// const Boom = require('@hapi/boom');
+const Boom = require('@hapi/boom');
 
-// const dewormingService = require('./notes.service');
+const notesService = require('./notes.service');
 
-// const getAllDeworming = async (req, res, next) => {
-//   try {
-//     const { dewormer, animalId } = req.query;
-//     const userId = req.user.sub;
+const getAllNotes = async (req, res, next) => {
+  try {
+    const { title } = req.query;
+    const userId = req.user.sub;
 
-//     const filters = {
-//       ...(dewormer && { dewormer }),
-//       ...(animalId && { animalId }),
-//     }
+    const filters = {
+      userId,
+      ...(title && { title }),
+    }
 
-//     const deworming = await dewormingService.getAllDeworming(userId, filters);
+    const note = await notesService.getAllNotes(filters);
 
-//     res.status(200).json({ deworming, sucess: true });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+    res.status(200).json({ note, sucess: true });
+  } catch (error) {
+    next(error);
+  }
+}
 
-// const createDeworming = async (req, res, next) => {
-//   try {
-//     const dewormingData = req.body;
-//     const userId = req.user.sub;
+const createNote = async (req, res, next) => {
+  try {
+    const noteData = req.body;
+    const userId = req.user.sub;
 
-//     const newDeworming = await dewormingService.createDeworming(userId, dewormingData);
-//     if(!newDeworming?.id) throw Boom.badRequest('Create animal operation returns null');
+    const newNote = await notesService.createNote({ ...noteData, userId });
+    if(!newNote?.id) throw Boom.badRequest('Create animal operation returns null');
 
-//     res.status(201).json({ message: 'Deworming was successfully created', success: true, newDeworming });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+    res.status(201).json({ message: 'Note was successfully created', success: true, newNote });
+  } catch (error) {
+    next(error);
+  }
+}
 
-// const updateDeworming = async (req, res, next) => {
-//   try {
-//     const { dewormingId } = req.params;
-//     const dewormingData = req.body;
-//     const userId = req.user.sub;
+const updateNote = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+    const noteData = req.body;
+    const userId = req.user.sub;
 
-//     const updatedDeworming = await dewormingService.updateDeworming(userId, dewormingId, dewormingData);
-//     if(!updatedDeworming?.id) throw Boom.badRequest('Update animal operation returns null');
+    const updatedNote = await notesService.updateNote(userId, noteId, noteData);
+    if(!updatedNote?.id) throw Boom.badRequest('Update animal operation returns null');
 
-//     res.status(200).json({ message: 'Deworming was successfully updated', success: true, updatedDeworming });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+    res.status(200).json({ message: 'Note was successfully updated', success: true, updatedNote });
+  } catch (error) {
+    next(error);
+  }
+}
 
-// const deleteDeworming = async (req, res, next) => {
-//   try {
-//     const { dewormingId } = req.params;
-//     const userId = req.user.sub;
+const deleteNote = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+    const userId = req.user.sub;
 
-//     const deletedDeworming = await dewormingService.deleteDeworming(userId, dewormingId);
-//     if(deletedDeworming === 0) throw Boom.badRequest('Delete animal operation returns 0 rows affected');
+    const deletedNote = await notesService.deleteNote(userId, noteId);
+    if(deletedNote === 0) throw Boom.badRequest('Delete animal operation returns 0 rows affected');
 
-//     res.status(200).json({ message: 'Deworming was successfully deleted', success: true, deletedDeworming });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
+    res.status(200).json({ message: 'Note was successfully deleted', success: true, deletedNote });
+  } catch (error) {
+    next(error);
+  }
+}
 
 
-// module.exports = {
-//   createDeworming,
-//   updateDeworming,
-//   getAllDeworming,
-//   deleteDeworming,
-// }
+module.exports = {
+  createNote,
+  updateNote,
+  getAllNotes,
+  deleteNote,
+}

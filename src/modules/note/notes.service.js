@@ -1,71 +1,67 @@
-// const Boom = require('@hapi/boom');
+const Boom = require('@hapi/boom');
 
-// const dewormingRepository = require('./notes.repository');
-// const animalRepository = require('../animal/animal.repository');
+const noteRepository = require('./notes.repository');
 
-// const getAllDeworming = async (userId, filters) => {
-//   const deworming = await dewormingRepository.findAllDewormings(userId, filters);
+const getAllNotes = async (filters) => {
+  const notes = await noteRepository.findAllNotes(filters);
 
-//   return deworming.map(deworming => formatDeworming(deworming));
-// }
+  return notes.map(note => formatNotes(note));
+}
 
-// const formatDeworming = (vaccination) => {
-//   return {
-//     id: vaccination.id,
-//     vaccine: vaccination.vaccine,
-//     description: vaccination.description || null,
-//     animalId: vaccination.animalId,
-//     registeredAt: vaccination.registeredAt.toISOString().split('T')[0] || vaccination.registeredAt,
-//   }
-// }
+const formatNotes = (note) => {
+  return {
+    id: note.id,
+    vaccine: note.title,
+    description: note.description || null,
+    userId: note.userId,
+    createdAt: note.createdAt.toISOString().split('T')[0] || note.createdAt,
+  }
+}
 
-// const getDeworming = async (userId, dewormingId) => {
-//   const deworming = await dewormingRepository.findOne(userId, dewormingId);
-//   if(!deworming?.id) throw Boom.notFound('Deworming does not exist');
-//   return deworming;
-// }
+const getNote = async (userId, noteId) => {
+  const note = await noteRepository.findOne(userId, noteId);
+  if(!note?.id) throw Boom.notFound('Note does not exist');
+  return note;
+}
 
-// const createDeworming = async (userId, dewormingData) => {
-//   const animal = await animalRepository.findOne(userId, dewormingData.animalId);
-//   if(!animal?.id) throw Boom.notFound('Animal does not exist or does not belong to the user');
+const createNote = async (noteData) => {
+  const note = {
+    title: noteData.title,
+    description: noteData.description || null,
+    userId: noteData.userId,
+    createdAt: noteData.createdAt || new Date().toISOString().split('T')[0],
+  }
 
-//   const deworming = {
-//     dewormer: dewormingData.dewormer,
-//     description: dewormingData.description || null,
-//     animalId: dewormingData.animalId,
-//     registeredAt: dewormingData.registeredAt || new Date().toISOString().split('T')[0],
-//   }
+  const newnote = await noteRepository.create(note);
+  if(!newnote?.id) throw Boom.badRequest('Something went wrong creating the note');
+  return formatNotes(newnote);
+}
 
-//   const newdeworming = await dewormingRepository.create(deworming);
-//   if(!newdeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-//   return formatDeworming(newdeworming);
-// }
+const updateNote = async (userId, noteId, noteData) => {
+  const note = await getNote(userId, noteId);
+  if(!note?.id) throw Boom.notFound('Note does not exist');
 
-// const updateDeworming = async (userId, dewormingId, dewormingData) => {
-//   const deworming = await dewormingRepository.findOne(userId, dewormingId);
-//   if(!deworming?.id) throw Boom.conflict('deworming does not exists');
+  const formattedNoteData = {
+    title: noteData.title,
+    ...(noteData.description && { description: noteData.description }),
+  }
 
-//   const formattedDewormingData = {
-//     dewormer: dewormingData.dewormer,
-//     ...(dewormingData.description && { description: dewormingData.description }),
-//   }
+  const [ updatedRows, [ updatedNote ]] = await noteRepository.update(noteId, formattedNoteData);
+  if(!updatedNote?.id) throw Boom.badRequest('Something went wrong creating the note');
+  return formatNotes(updatedNote);
+}
 
-//   const [ updatedRows, [ updatedDeworming ]] = await dewormingRepository.update(dewormingId, formattedDewormingData);
-//   if(!updatedDeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-//   return formatDeworming(updatedDeworming);
-// }
+const deleteNote = async (userId, noteId) => {
+  const note = await getNote(userId, noteId);
+  if(!note?.id) throw Boom.conflict('note does not exists');
 
-// const deleteDeworming = async (userId, dewormingId) => {
-//   const deworming = await dewormingRepository.findOne(userId, dewormingId);
-//   if(!deworming?.id) throw Boom.conflict('deworming does not exists');
+  return await noteRepository.destroy(noteId);
+}
 
-//   return await dewormingRepository.destroy(dewormingId);
-// }
-
-// module.exports = {
-//   getAllDeworming,
-//   getDeworming,
-//   createDeworming,
-//   updateDeworming,
-//   deleteDeworming,
-// }
+module.exports = {
+  getAllNotes,
+  getNote,
+  createNote,
+  updateNote,
+  deleteNote,
+}
