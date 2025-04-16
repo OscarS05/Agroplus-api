@@ -12,7 +12,7 @@ routes.get('/',
   animalControllers.getAllAnimals
 );
 
-routes.get('/:animalId',
+routes.get('/animal/:animalId',
   validateSession,
   validatorHandler(animalIdSchema, 'params'),
   animalControllers.getOneAnimal

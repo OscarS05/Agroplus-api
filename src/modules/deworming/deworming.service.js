@@ -9,13 +9,13 @@ const getAllDeworming = async (userId, filters) => {
   return deworming.map(deworming => formatDeworming(deworming));
 }
 
-const formatDeworming = (vaccination) => {
+const formatDeworming = (dewormer) => {
   return {
-    id: vaccination.id,
-    vaccine: vaccination.vaccine,
-    description: vaccination.description || null,
-    animalId: vaccination.animalId,
-    registeredAt: vaccination.registeredAt.toISOString().split('T')[0] || vaccination.registeredAt,
+    id: dewormer.id,
+    dewormer: dewormer.dewormer,
+    description: dewormer.description || null,
+    animalId: dewormer.animalId,
+    registeredAt: dewormer.registeredAt.toISOString().split('T')[0] || dewormer.registeredAt,
   }
 }
 

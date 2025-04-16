@@ -22,10 +22,11 @@ const getAllVaccination = async (req, res, next) => {
 
 const createVaccination = async (req, res, next) => {
   try {
+    const { animalId } = req.params;
     const vaccinationData = req.body;
     const userId = req.user.sub;
 
-    const newVaccination = await vaccinationService.createVaccination(userId, vaccinationData);
+    const newVaccination = await vaccinationService.createVaccination(userId, { ...vaccinationData, animalId });
     if(!newVaccination?.id) throw Boom.badRequest('Create animal operation returns null');
 
     res.status(201).json({ message: 'Vaccination was successfully created', success: true, newVaccination });

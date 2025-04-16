@@ -3,29 +3,31 @@ const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
-const { createDewormingSchema, dewormingIdSchema, updateDewormingSchema } = require('./deworming.schemas');
+const { animalIdSchema } = require('../animal/animal.schemas');
+const { bodyDewormingSchema, dewormingIdSchema, dewormingSchema } = require('./deworming.schemas');
 
 const dewormingControllers = require('./deworming.controllers');
 
-routes.get('/',
+routes.get('/deworming',
   validateSession,
   dewormingControllers.getAllDeworming
 );
 
-routes.post('/',
+routes.post('/:animalId/deworming',
   validateSession,
-  validatorHandler(createDewormingSchema, 'body'),
+  validatorHandler(animalIdSchema, 'params'),
+  validatorHandler(bodyDewormingSchema, 'body'),
   dewormingControllers.createDeworming
 );
 
-routes.patch('/:dewormingId',
+routes.patch('/deworming/:dewormingId',
   validateSession,
   validatorHandler(dewormingIdSchema, 'params'),
-  validatorHandler(updateDewormingSchema, 'body'),
+  validatorHandler(bodyDewormingSchema, 'body'),
   dewormingControllers.updateDeworming
 );
 
-routes.delete('/:dewormingId',
+routes.delete('/deworming/:dewormingId',
   validateSession,
   validatorHandler(dewormingIdSchema, 'params'),
   dewormingControllers.deleteDeworming

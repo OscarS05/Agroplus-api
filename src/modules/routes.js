@@ -12,8 +12,8 @@ function routerApi(app) {
   router.use('/users', userRouter);
   router.use('/auth', authRoutes);
   router.use('/animals', animalRoutes);
-  router.use('/deworming', dewormingRoutes);
-  router.use('/vaccination', vaccinationRoutes);
+  router.use('/animals', dewormingRoutes);
+  router.use('/animals', vaccinationRoutes);
 }
 
 module.exports = { routerApi };

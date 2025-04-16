@@ -22,10 +22,11 @@ const getAllDeworming = async (req, res, next) => {
 
 const createDeworming = async (req, res, next) => {
   try {
+    const { animalId } = req.params;
     const dewormingData = req.body;
     const userId = req.user.sub;
 
-    const newDeworming = await dewormingService.createDeworming(userId, dewormingData);
+    const newDeworming = await dewormingService.createDeworming(userId, { ...dewormingData, animalId });
     if(!newDeworming?.id) throw Boom.badRequest('Create animal operation returns null');
 
     res.status(201).json({ message: 'Deworming was successfully created', success: true, newDeworming });
@@ -36,7 +37,7 @@ const createDeworming = async (req, res, next) => {
 
 const updateDeworming = async (req, res, next) => {
   try {
-    const { dewormingId } = req.params;
+    const { animalId, dewormingId } = req.params;
     const dewormingData = req.body;
     const userId = req.user.sub;
 

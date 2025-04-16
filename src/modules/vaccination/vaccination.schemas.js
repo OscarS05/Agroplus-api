@@ -4,23 +4,21 @@ const id = Joi.number().integer();
 const description = Joi.string().max(255);
 const vaccine = Joi.string().min(1).max(255);
 
+const vaccinationSchema = Joi.object({
+  vaccinationId: id.required(),
+});
+
 const vaccinationIdSchema = Joi.object({
   vaccinationId: id.required(),
 });
 
-const createVaccinationSchema = Joi.object({
-  vaccine: vaccine.required(),
-  description: description.optional(),
-  animalId: id.required(),
-});
-
-const updateVaccinationSchema = Joi.object({
+const bodyVaccinationSchema = Joi.object({
   vaccine: vaccine.required(),
   description: description.optional(),
 });
 
 module.exports = {
+  vaccinationSchema,
   vaccinationIdSchema,
-  createVaccinationSchema,
-  updateVaccinationSchema,
+  bodyVaccinationSchema,
 };
