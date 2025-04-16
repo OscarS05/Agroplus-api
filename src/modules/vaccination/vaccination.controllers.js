@@ -28,8 +28,9 @@ const createVaccination = async (req, res, next) => {
 
     const newVaccination = await vaccinationService.createVaccination(userId, { ...vaccinationData, animalId });
     if(!newVaccination?.id) throw Boom.badRequest('Create animal operation returns null');
+    const formattedVaccinationData = await vaccinationService.getVaccination(userId, newVaccination.id);
 
-    res.status(201).json({ message: 'Vaccination was successfully created', success: true, newVaccination });
+    res.status(201).json({ message: 'Vaccination was successfully created', success: true, newVaccination: formattedVaccinationData });
   } catch (error) {
     next(error);
   }
@@ -43,8 +44,9 @@ const updateVaccination = async (req, res, next) => {
 
     const updatedVaccination = await vaccinationService.updateVaccination(userId, vaccinationId, vaccinationData);
     if(!updatedVaccination?.id) throw Boom.badRequest('Update animal operation returns null');
+    const formattedVaccinationData = await vaccinationService.getVaccination(userId, updatedVaccination.id);
 
-    res.status(200).json({ message: 'Vaccination was successfully updated', success: true, updatedVaccination });
+    res.status(200).json({ message: 'Vaccination was successfully updated', success: true, updatedVaccination: formattedVaccinationData });
   } catch (error) {
     next(error);
   }

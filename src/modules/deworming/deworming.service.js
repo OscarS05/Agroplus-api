@@ -1,4 +1,5 @@
 const Boom = require('@hapi/boom');
+const { v4: uuidv4 } = require('uuid');
 
 const dewormingRepository = require('./deworming.repository');
 const animalRepository = require('../animal/animal.repository');
@@ -14,7 +15,7 @@ const formatDeworming = (dewormer) => {
     id: dewormer.id,
     dewormer: dewormer.dewormer,
     description: dewormer.description || null,
-    animalId: dewormer.animalId,
+    animalId: dewormer.animal ? dewormer.animal.code : null,
     registeredAt: dewormer.registeredAt.toISOString().split('T')[0] || dewormer.registeredAt,
   }
 }
@@ -22,7 +23,7 @@ const formatDeworming = (dewormer) => {
 const getDeworming = async (userId, dewormingId) => {
   const deworming = await dewormingRepository.findOne(userId, dewormingId);
   if(!deworming?.id) throw Boom.notFound('Deworming does not exist');
-  return deworming;
+  return formatDeworming(deworming);
 }
 
 const createDeworming = async (userId, dewormingData) => {
@@ -30,6 +31,7 @@ const createDeworming = async (userId, dewormingData) => {
   if(!animal?.id) throw Boom.notFound('Animal does not exist or does not belong to the user');
 
   const deworming = {
+    id: uuidv4(),
     dewormer: dewormingData.dewormer,
     description: dewormingData.description || null,
     animalId: dewormingData.animalId,
@@ -38,7 +40,7 @@ const createDeworming = async (userId, dewormingData) => {
 
   const newdeworming = await dewormingRepository.create(deworming);
   if(!newdeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-  return formatDeworming(newdeworming);
+  return newdeworming;
 }
 
 const updateDeworming = async (userId, dewormingId, dewormingData) => {
@@ -52,7 +54,7 @@ const updateDeworming = async (userId, dewormingId, dewormingData) => {
 
   const [ updatedRows, [ updatedDeworming ]] = await dewormingRepository.update(dewormingId, formattedDewormingData);
   if(!updatedDeworming?.id) throw Boom.badRequest('Something went wrong creating the deworming');
-  return formatDeworming(updatedDeworming);
+  return updatedDeworming;
 }
 
 const deleteDeworming = async (userId, dewormingId) => {

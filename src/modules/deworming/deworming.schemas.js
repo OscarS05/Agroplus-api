@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const id = Joi.number().integer();
+const id = Joi.string().uuid();
 const description = Joi.string().max(255);
 const dewormer = Joi.string().min(1).max(255);
 

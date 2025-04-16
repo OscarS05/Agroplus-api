@@ -6,8 +6,8 @@ const UserSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   },
   name: {
     allowNull: false,

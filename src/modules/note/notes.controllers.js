@@ -27,8 +27,9 @@ const createNote = async (req, res, next) => {
 
     const newNote = await notesService.createNote({ ...noteData, userId });
     if(!newNote?.id) throw Boom.badRequest('Create animal operation returns null');
+    const formattedNoteData = await notesService.getNote(userId, newNote.id);
 
-    res.status(201).json({ message: 'Note was successfully created', success: true, newNote });
+    res.status(201).json({ message: 'Note was successfully created', success: true, newNote: formattedNoteData });
   } catch (error) {
     next(error);
   }
@@ -42,8 +43,9 @@ const updateNote = async (req, res, next) => {
 
     const updatedNote = await notesService.updateNote(userId, noteId, noteData);
     if(!updatedNote?.id) throw Boom.badRequest('Update animal operation returns null');
+    const formattedNoteData = await notesService.getNote(userId, updatedNote.id);
 
-    res.status(200).json({ message: 'Note was successfully updated', success: true, updatedNote });
+    res.status(200).json({ message: 'Note was successfully updated', success: true, updatedNote: formattedNoteData });
   } catch (error) {
     next(error);
   }

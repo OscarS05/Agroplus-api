@@ -1,10 +1,11 @@
 const Boom = require('@hapi/boom');
+const { v4: uuidv4 } = require('uuid');
 
 const noteRepository = require('./notes.repository');
 
 const getAllNotes = async (filters) => {
   const notes = await noteRepository.findAllNotes(filters);
-
+  if(!notes?.length === 0) return [];
   return notes.map(note => formatNotes(note));
 }
 
@@ -13,7 +14,7 @@ const formatNotes = (note) => {
     id: note.id,
     vaccine: note.title,
     description: note.description || null,
-    userId: note.userId,
+    userId: note.user ? note.user.name : null,
     createdAt: note.createdAt.toISOString().split('T')[0] || note.createdAt,
   }
 }
@@ -21,11 +22,12 @@ const formatNotes = (note) => {
 const getNote = async (userId, noteId) => {
   const note = await noteRepository.findOne(userId, noteId);
   if(!note?.id) throw Boom.notFound('Note does not exist');
-  return note;
+  return formatNotes(note);
 }
 
 const createNote = async (noteData) => {
   const note = {
+    id: uuidv4(),
     title: noteData.title,
     description: noteData.description || null,
     userId: noteData.userId,
@@ -34,7 +36,7 @@ const createNote = async (noteData) => {
 
   const newnote = await noteRepository.create(note);
   if(!newnote?.id) throw Boom.badRequest('Something went wrong creating the note');
-  return formatNotes(newnote);
+  return newnote;
 }
 
 const updateNote = async (userId, noteId, noteData) => {
@@ -48,7 +50,7 @@ const updateNote = async (userId, noteId, noteData) => {
 
   const [ updatedRows, [ updatedNote ]] = await noteRepository.update(noteId, formattedNoteData);
   if(!updatedNote?.id) throw Boom.badRequest('Something went wrong creating the note');
-  return formatNotes(updatedNote);
+  return updatedNote;
 }
 
 const deleteNote = async (userId, noteId) => {

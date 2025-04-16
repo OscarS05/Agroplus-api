@@ -28,8 +28,9 @@ const createDeworming = async (req, res, next) => {
 
     const newDeworming = await dewormingService.createDeworming(userId, { ...dewormingData, animalId });
     if(!newDeworming?.id) throw Boom.badRequest('Create animal operation returns null');
+    const formattedDewormingData = await dewormingService.getDeworming(userId, newDeworming.id);
 
-    res.status(201).json({ message: 'Deworming was successfully created', success: true, newDeworming });
+    res.status(201).json({ message: 'Deworming was successfully created', success: true, newDeworming: formattedDewormingData });
   } catch (error) {
     next(error);
   }
@@ -43,8 +44,9 @@ const updateDeworming = async (req, res, next) => {
 
     const updatedDeworming = await dewormingService.updateDeworming(userId, dewormingId, dewormingData);
     if(!updatedDeworming?.id) throw Boom.badRequest('Update animal operation returns null');
+    const formattedDewormingData = await dewormingService.getDeworming(userId, updatedDeworming.id);
 
-    res.status(200).json({ message: 'Deworming was successfully updated', success: true, updatedDeworming });
+    res.status(200).json({ message: 'Deworming was successfully updated', success: true, updatedDeworming: formattedDewormingData });
   } catch (error) {
     next(error);
   }

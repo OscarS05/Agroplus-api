@@ -1,11 +1,12 @@
 const Boom = require('@hapi/boom');
+const { v4: uuidv4 } = require('uuid');
 
 const vaccinationRepository = require('./vaccination.repository');
 const animalRepository = require('../animal/animal.repository');
 
 const getAllVaccination = async (userId, filters) => {
   const vaccinations = await vaccinationRepository.findAllVaccinations(userId, filters);
-  if(vaccinations.length === 0) throw Boom.notFound('No vaccinations found');
+  if(vaccinations.length === 0) return [];
 
   return vaccinations.map(vaccination => formatVaccination(vaccination));
 }
@@ -15,7 +16,7 @@ const formatVaccination = (vaccination) => {
     id: vaccination.id,
     vaccine: vaccination.vaccine,
     description: vaccination.description || null,
-    animalId: vaccination.animalId,
+    animal: vaccination.animal ? vaccination.animal.code : null,
     registeredAt: vaccination.registeredAt.toISOString().split('T')[0] || vaccination.registeredAt,
   }
 }
@@ -23,7 +24,7 @@ const formatVaccination = (vaccination) => {
 const getVaccination = async (userId, vaccinationId) => {
   const vaccination = await vaccinationRepository.findOne(userId, vaccinationId);
   if(!vaccination?.id) throw Boom.notFound('Vaccination does not exist');
-  return vaccination;
+  return formatVaccination(vaccination);
 }
 
 const createVaccination = async (userId, vaccinationData) => {
@@ -31,6 +32,7 @@ const createVaccination = async (userId, vaccinationData) => {
   if(!animal?.id) throw Boom.notFound('Animal does not exist or does not belong to the user');
 
   const vaccination = {
+    id: uuidv4(),
     vaccine: vaccinationData.vaccine,
     description: vaccinationData.description || null,
     animalId: vaccinationData.animalId,
@@ -39,7 +41,7 @@ const createVaccination = async (userId, vaccinationData) => {
 
   const newVaccination = await vaccinationRepository.create(vaccination);
   if(!newVaccination?.id) throw Boom.badRequest('Something went wrong creating the vaccination');
-  return formatVaccination(newVaccination);
+  return newVaccination;
 }
 
 const updateVaccination = async (userId, vaccinationId, vaccinationData) => {
@@ -53,7 +55,7 @@ const updateVaccination = async (userId, vaccinationId, vaccinationData) => {
 
   const [ updatedRows, [ updatedVaccination ]] = await vaccinationRepository.update(vaccinationId, formattedVaccinationData);
   if(!updatedVaccination?.id) throw Boom.badRequest('Something went wrong creating the vaccination');
-  return formatVaccination(updatedVaccination);
+  return updatedVaccination;
 }
 
 const deleteVaccination = async (userId, vaccinationId) => {

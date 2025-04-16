@@ -7,8 +7,8 @@ const DewormingSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
-    autoIncrement: true,
-    type: DataTypes.INTEGER
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
   },
   dewormer: {
     allowNull: false,
@@ -21,7 +21,7 @@ const DewormingSchema = {
   animalId: {
     field: 'animal_id',
     allowNull: false,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     references: {
       model: ANIMAL_TABLE,
       key: 'id',
