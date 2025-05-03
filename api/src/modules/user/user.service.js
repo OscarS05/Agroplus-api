@@ -14,6 +14,10 @@ const getUser = async (userId) => {
   return await userRepository.findOne(userId);
 }
 
+const getUserByEmail = async (email) => {
+  return await userRepository.findOneByEmail(email);
+}
+
 const createUser = async (userData) => {
   const userAlreadyExist = await userRepository.findOneByEmail(userData.email);
   if(userAlreadyExist?.id) throw Boom.conflict('User already exists');
@@ -58,6 +62,7 @@ const generateToken = (user) => {
 }
 
 module.exports = {
+  getUserByEmail,
   getUser,
   createUser,
   getAllUsers,

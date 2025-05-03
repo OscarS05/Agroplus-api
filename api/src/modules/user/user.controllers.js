@@ -1,6 +1,6 @@
 const Boom = require('@hapi/boom');
 
-const cookieHelpers = require('../../helpers/cookieHelper');
+const cookieHelpers = require('../../utils/cookieHelper');
 const userService = require('./user.service');
 
 const getAllUsers = async (req, res, next) => {
@@ -15,9 +15,9 @@ const getAllUsers = async (req, res, next) => {
 
 const getOneUser = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const { email } = req.params;
 
-    const user = await userService.getUser(userId);
+    const user = await userService.getUserByEmail(email);
 
     res.status(200).json({ user });
   } catch (error) {
@@ -54,19 +54,10 @@ const login = async (req, res, next) => {
   }
 }
 
-const updateUser = async (req, res, next) => {
-  try {
-
-  } catch (error) {
-    next(error);
-  }
-}
-
 
 module.exports = {
   getOneUser,
   createUser,
   login,
-  updateUser,
   getAllUsers,
 }

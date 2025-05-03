@@ -1,14 +1,13 @@
 {
-  "name": "proyectoagroplus",
+  "name": "agroplus-api",
   "version": "1.0.0",
-  "description": "SENA project",
-  "homepage": "https://github.com/IsabelaRojas/ProyectoAgroplus#readme",
+  "description": "personal-project",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IsabelaRojas/ProyectoAgroplus.git"
+    "url": "https://github.com/OscarS05/Agroplus-api"
   },
   "license": "ISC",
-  "author": "",
+  "author": "OscarSM",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
@@ -18,7 +17,7 @@
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
     "migrations:delete": "sequelize-cli db:migrate:undo:all",
-    "environment:status": "sequelize-cli db:migrate:status"
+    "migrations:status": "sequelize-cli db:migrate:status"
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
@@ -35,6 +34,8 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"
   }
 }
