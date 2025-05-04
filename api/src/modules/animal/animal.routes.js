@@ -16,7 +16,7 @@ const animalControllers = require('./animal.controllers');
  *       This endpoint retrieves all animals associated with the authenticated user.
  *       The authentication is handled automatically via cookies that store the access token.
  *
- *       You can also filter results by using optional query parameters (e.g., animalId, breed, livestockType, animalType, sex).
+ *       You can also filter results by using **optional** query parameters (e.g., animalId, code, breed, livestockType, animalType, sex).
  *
  *       ### Authorization & Access Rules
  *       - A valid session (access token stored in cookies) is required.
@@ -33,6 +33,12 @@ const animalControllers = require('./animal.controllers');
  *           format: uuid
  *         required: false
  *         description: Filter by animal id
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter by animal code
  *       - in: query
  *         name: livestockType
  *         schema:

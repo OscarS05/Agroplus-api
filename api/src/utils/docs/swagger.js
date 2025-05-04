@@ -50,6 +50,14 @@ const options = {
         name: 'deworming',
         description: 'Everything about the deworming'
       },
+      {
+        name: 'vaccination',
+        description: 'Everything about the vaccination'
+      },
+      {
+        name: 'notes',
+        description: 'Everything about the notes'
+      },
     ],
     externalDocs:{
       description: 'Find out the GitHub repository',

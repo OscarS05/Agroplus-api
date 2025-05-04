@@ -4,12 +4,13 @@ const animalService = require('./animal.service');
 
 const getAllAnimals = async (req, res, next) => {
   try {
-    const { livestockType, animalType, breed, sex, animalId } = req.query;
+    const { code, livestockType, animalType, breed, sex, animalId } = req.query;
     const userId = req.user.sub;
 
     const filters = {
       userId,
-      ...(animalId && { animalId }),
+      ...(animalId && { id: animalId }),
+      ...(code && { code }),
       ...(livestockType && { livestockType }),
       ...(animalType && { animalType }),
       ...(breed && { breed }),
