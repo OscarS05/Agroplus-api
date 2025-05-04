@@ -154,6 +154,73 @@ api/
 
 ---
 
+## 📥 Example Requests & Responses
+
+Here are example requests and responses for some endpoints:
+
+### 🔸 POST `/animals/`
+
+**Description**: Creates a new animal record in the database.
+
+**Request Body** _(example)_:
+
+```bash
+{
+  "livestockType": "Bovino",
+  "animalType": "Vaca",
+  "breed": "Angus",
+  "code": "BOV-001",
+  "sex": "Female",
+  "father": "d0759f76-a119-4be0-ad33-e93595f56be8"
+}
+```
+
+**Response** _(example)_:
+
+```bash
+{
+  "message": "Animal was successfully created",
+  "success": true,
+  "newAnimal": {
+    "id": "c36b4f45-35f9-4d77-9669-e55eb7d33405",
+    "livestockType": "Bovino",
+    "animalType": "Vaca",
+    "breed": "Angus",
+    "code": "BOV-001",
+    "sex": "Female",
+    "mother": null,
+    "father": "OPP-TT1",
+    "birthDate": null,
+    "registeredAt": "2025-04-16"
+  }
+}
+```
+
+---
+
+### 🔸 GET `/animals/vaccination/`
+
+**Description**: Retrieves the list of all vaccinations associated with animals.
+
+**Response** _(example)_:
+
+```bash
+{
+  "vaccinations": [
+    {
+      "id": "065f441b-64ba-411a-97d1-7cbf15443732",
+      "vaccine": "Ivermectin 0.5%",
+      "description": "Updated",
+      "animal": "abc-123",
+      "registeredAt": "2025-04-16"
+    }
+  ],
+  "success": true
+}
+```
+
+---
+
 ## 🚫 Limitations & Future Work
 
 - No role-based authorization.  
