@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 
 const swaggerUI = require('swagger-ui-express');
 const specs = require('./src/utils/docs/swagger');
@@ -32,14 +31,6 @@ app.use(cors({
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 routerApi(app);
-
-
-const publicPath = path.join(__dirname, '../public');
-app.use(express.static(publicPath));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
-});
 
 app.use(logErrors);
 app.use(ormErrorHandler);
