@@ -11,6 +11,8 @@
 - **Production URL**: [https://agroplus-api.onrender.com/api-docs](https://agroplus-api.onrender.com/api-docs)
 - **Development Swagger URL**: `http://localhost:4000/api-docs` *(port may vary depending on your `.env` configuration)*
 
+🎥 **Demo Video**: [Watch how to use the API via Swagger](https://www.loom.com/share/08478aee6b204726a32ff5403c1d3f16?sid=33cafed8-d9e4-4af5-bebb-a6b1490977ce)
+
 ---
 
 ## 🧑‍💻 Tech Stack
