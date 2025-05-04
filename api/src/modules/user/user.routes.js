@@ -16,11 +16,12 @@ const userControllers = require('./user.controllers');
  *     description: |
  *       This endpoint retrieves all registered users in the system.
  *       It returns an array with user information such as ID, name, email, role, and creation date.
+ *       - Requires a valid `accessToken` sent via cookies (handled automatically by the system).
  *
  *     tags:
  *       - user
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     responses:
  *       200:
  *         description: List of users retrieved successfully
@@ -51,14 +52,14 @@ routes.get('/',
  *
  *       ### Authorization & Access Rules
  *
- *       - A valid Bearer token is required.
+ *       - Requires a valid `accessToken` sent via cookies (handled automatically by the system).
  *       - Only authenticated users can access this endpoint.
  *       - If the user is not found, a `404 Not Found` error will be returned.
  *       - If there is an internal server error, a `500 Internal Server Error` will be returned.
  *     tags:
  *       - user
  *     security:
- *       - bearerAuth: []
+ *       - cookieAuth: []
  *     parameters:
  *       - in: path
  *         name: email

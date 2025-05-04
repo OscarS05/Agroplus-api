@@ -42,6 +42,10 @@ const options = {
         name: 'auth',
         description: 'Everything about the user'
       },
+      {
+        name: 'animal',
+        description: 'Everything about the animal'
+      },
     ],
     externalDocs:{
       description: 'Find out the GitHub repository',
@@ -49,14 +53,19 @@ const options = {
     },
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'accessToken',
+        },
       }
     }
   },
+  security: [
+    {
+      cookieAuth: [],
+    },
+  ],
   apis: [
     ...routes,
     path.resolve(__dirname, './swaggerSchemas/*.js'),
