@@ -50,6 +50,8 @@ const vaccinationControllers = require('./vaccination.controllers');
  *                 sucess:
  *                   type: boolean
  *                   example: true
+ *       401:
+ *         description: Unauthorized. Access token expired, invalid or not provided
  */
 routes.get('/vaccination',
   validateSession,
@@ -98,6 +100,10 @@ routes.get('/vaccination',
  *                   example: true
  *                 newVaccination:
  *                    $ref: '#/components/schemas/Vaccination'
+ *       401:
+ *         description: Unauthorized. Access token expired, invalid or not provided
+ *       404:
+ *         description: Not found. Animal id not found or not belongs to the authenticated user
  */
 routes.post('/:animalId/vaccination',
   validateSession,
@@ -148,6 +154,10 @@ routes.post('/:animalId/vaccination',
  *                   example: true
  *                 updatedVaccination:
  *                    $ref: '#/components/schemas/Vaccination'
+ *       404:
+ *         description: Vaccination record not found or not belongs to the user authenticated
+ *       401:
+ *         description: Unauthorized. Access token expired, invalid or not provided
  */
 routes.patch('/vaccination/:vaccinationId',
   validateSession,
@@ -194,6 +204,10 @@ routes.patch('/vaccination/:vaccinationId',
  *                 deletedVaccination:
  *                   type: number
  *                   example: 1
+ *       401:
+ *         description: Unauthorized. Access token expired, invalid or not provided
+ *       404:
+ *         description: Vaccination record not found or not belongs to the user authenticated
  */
 routes.delete('/vaccination/:vaccinationId',
   validateSession,

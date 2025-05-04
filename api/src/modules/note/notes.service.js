@@ -14,7 +14,8 @@ const formatNotes = (note) => {
     id: note.id,
     vaccine: note.title,
     description: note.description || null,
-    userId: note.user ? note.user.name : null,
+    userId: note.user ? note.user.id : null,
+    user: note.user ? note.user.name : null,
     createdAt: note.createdAt.toISOString().split('T')[0] || note.createdAt,
   }
 }

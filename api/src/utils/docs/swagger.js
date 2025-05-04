@@ -7,7 +7,7 @@ const routes = [
   path.resolve(__dirname, '../../modules/animal/animal.routes.js'),
   path.resolve(__dirname, '../../modules/deworming/deworming.routes.js'),
   path.resolve(__dirname, '../../modules/vaccination/vaccination.routes.js'),
-  path.resolve(__dirname, '../../modules/note/note.routes.js'),
+  path.resolve(__dirname, '../../modules/note/notes.routes.js'),
 ]
 
 const options = {
