@@ -2,11 +2,16 @@ const express = require('express');
 const routes = express.Router();
 const authRoutes = express.Router();
 
-const { validateSession } = require('../../middlewares/authentication');
+const { validateSession, limiter } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
 const { userEmailSchema, signUpSchema, loginSchema } = require('./user.schemas');
 
 const userControllers = require('./user.controllers');
+
+const LOGIN_LIMITER_MESSAGE = {
+  error: 'Too many login attempts',
+  message: 'Please wait 15 minutes and try again.'
+};
 
 /**
  * @swagger
@@ -154,6 +159,7 @@ authRoutes.post('/sign-up',
  *         description: Internal server error
  */
 authRoutes.post('/login',
+  limiter(5, 15 * 60 * 100, LOGIN_LIMITER_MESSAGE),
   validatorHandler(loginSchema, 'body'),
   userControllers.login
 );

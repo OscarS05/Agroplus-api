@@ -1,8 +1,18 @@
 const Boom = require('@hapi/boom');
-const { config } = require('../../config/config');
+const { rateLimit } = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
 
+const { config } = require('../../config/config');
+
 const userRepository = require('../modules/user/user.repository');
+
+const limiter = (limit, windowMs, message) => rateLimit( {
+  windowMs: windowMs,
+  limit: limit,
+  message: message,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const validateSession = async (req, res, next) => {
   try {
@@ -23,4 +33,4 @@ const validateSession = async (req, res, next) => {
   }
 }
 
-module.exports = { validateSession };
+module.exports = { validateSession, limiter };

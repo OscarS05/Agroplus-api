@@ -48,7 +48,7 @@ const login = async (req, res, next) => {
 
     cookieHelpers.setCookieAccessToken(res, accessToken);
 
-    res.status(200).json({ message: 'User authenticated successfully', success: true, accessToken });
+    res.status(200).json({ message: 'User authenticated successfully', success: true });
   } catch (error) {
     next(error);
   }

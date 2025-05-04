@@ -57,7 +57,7 @@ const generateToken = (user) => {
     role: user.role
   }
 
-  const accessToken = jwt.sign(payload, config.jwtAccessSecret, { expiresIn: '60m' });
+  const accessToken = jwt.sign(payload, config.jwtAccessSecret, { expiresIn: '15d' });
   return accessToken;
 }
 
