@@ -29,6 +29,10 @@ const options = {
     },
     servers: [
       {
+        url: `https://agroplus-api.onrender.com/api/v1`,
+        description: 'Remote server'
+      },
+      {
         url: `http://localhost:${config.port}/api/v1`,
         description: 'Local server'
       }
