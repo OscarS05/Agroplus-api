@@ -46,6 +46,10 @@ const options = {
         name: 'animal',
         description: 'Everything about the animal'
       },
+      {
+        name: 'deworming',
+        description: 'Everything about the deworming'
+      },
     ],
     externalDocs:{
       description: 'Find out the GitHub repository',

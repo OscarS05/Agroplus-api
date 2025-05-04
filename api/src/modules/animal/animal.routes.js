@@ -16,7 +16,7 @@ const animalControllers = require('./animal.controllers');
  *       This endpoint retrieves all animals associated with the authenticated user.
  *       The authentication is handled automatically via cookies that store the access token.
  *
- *       You can also filter results by using optional query parameters (e.g., breed, livestockType, animalType, sex).
+ *       You can also filter results by using optional query parameters (e.g., animalId, breed, livestockType, animalType, sex).
  *
  *       ### Authorization & Access Rules
  *       - A valid session (access token stored in cookies) is required.
@@ -26,6 +26,13 @@ const animalControllers = require('./animal.controllers');
  *     security:
  *       - cookieAuth: []
  *     parameters:
+ *       - in: query
+ *         name: animalId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: false
+ *         description: Filter by animal id
  *       - in: query
  *         name: livestockType
  *         schema:
@@ -73,54 +80,6 @@ const animalControllers = require('./animal.controllers');
 routes.get('/',
   validateSession,
   animalControllers.getAllAnimals
-);
-
-/**
- * @swagger
- * /animals/{animalId}:
- *   get:
- *     summary: Get a specific animal by ID
- *     description: |
- *       This endpoint retrieves a specific animal that belongs to the authenticated user, using the animal's UUID.
-
- *       ### Authorization & Access Rules
- *       - A valid `accessToken` cookie is required (automatically handled by the system).
- *       - The token is not manually provided in the request; it's handled automatically via cookies.
- *       - If the `animalId` does not belong to the authenticated user or does not exist, a `404 Not Found` error is returned.
-
- *     tags:
- *       - animal
- *     security:
- *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: animalId
- *         required: true
- *         description: UUID of the animal to retrieve
- *         schema:
- *           type: string
- *           format: uuid
- *     responses:
- *       200:
- *         description: Animal retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *                type: object
- *                properties:
- *                  animal:
- *                    $ref: '#/components/schemas/Animal'
- *                  sucess:
- *                   type: boolean
- *       401:
- *         description: Missing or invalid access token (cookie)
- *       404:
- *         description: Animal not found
- */
-routes.get('/:animalId',
-  validateSession,
-  validatorHandler(animalIdSchema, 'params'),
-  animalControllers.getOneAnimal
 );
 
 /**

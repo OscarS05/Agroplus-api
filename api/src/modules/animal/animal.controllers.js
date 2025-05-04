@@ -4,11 +4,12 @@ const animalService = require('./animal.service');
 
 const getAllAnimals = async (req, res, next) => {
   try {
-    const { livestockType, animalType, breed, sex } = req.query;
+    const { livestockType, animalType, breed, sex, animalId } = req.query;
     const userId = req.user.sub;
 
     const filters = {
       userId,
+      ...(animalId && { animalId }),
       ...(livestockType && { livestockType }),
       ...(animalType && { animalType }),
       ...(breed && { breed }),
@@ -18,19 +19,6 @@ const getAllAnimals = async (req, res, next) => {
     const animals = await animalService.getAllAnimals(filters);
 
     res.status(200).json({ animals, sucess: true });
-  } catch (error) {
-    next(error);
-  }
-}
-
-const getOneAnimal = async (req, res, next) => {
-  try {
-    const { animalId } = req.params;
-    const userId = req.user.sub;
-
-    const animal = await animalService.getAnimal(userId, animalId);
-
-    res.status(200).json({ animal, sucess: true });
   } catch (error) {
     next(error);
   }
@@ -83,7 +71,6 @@ const deleteAnimal = async (req, res, next) => {
 
 
 module.exports = {
-  getOneAnimal,
   createAnimal,
   updateAnimal,
   getAllAnimals,
