@@ -23,35 +23,65 @@ const getAllUsers = async () => {
 };
 
 const getUser = async (userId) => {
-  return userRepository.findOne(userId);
+  if (!userId) {
+    throw Boom.badRequest('userId was not provided');
+  }
+
+  const user = await userRepository.findOne(userId);
+
+  if (!user?.id) {
+    throw Boom.notFound('User was not found');
+  }
+
+  return user;
 };
 
 const getUserByEmail = async (email) => {
-  return userRepository.findOneByEmail(email);
+  if (!email) {
+    throw Boom.badRequest('email was not provided');
+  }
+
+  const user = await userRepository.findOneByEmail(email);
+
+  if (!user?.id) {
+    throw Boom.badRequest('user was not found');
+  }
+
+  return user;
 };
 
 const createUser = async (userData) => {
+  if (!userData?.email || !userData?.password || !userData?.name) {
+    throw Boom.badRequest('userData was not provided');
+  }
+
   const userAlreadyExist = await userRepository.findOneByEmail(userData.email);
   if (userAlreadyExist?.id) throw Boom.conflict('User already exists');
 
   const user = {
     id: uuidv4(),
-    name: userData?.name,
-    email: userData?.email,
-    password: await bcrypt.hash(userData?.password, 10),
+    name: userData.name,
+    email: userData.email,
+    password: await bcrypt.hash(userData.password, 10),
     role: 'basic',
-    createdAt: new Date().toISOString().split('T')[0],
+    createdAt: new Date().toISOString(),
   };
 
   const newUser = await userRepository.create(user);
-  if (!newUser?.id)
+
+  if (!newUser?.id) {
     throw Boom.badRequest('Something went wrong creating the user');
+  }
 
   delete newUser?.password;
   return newUser;
 };
 
 const login = async (userCredentials) => {
+  if (!userCredentials?.email || !userCredentials?.password) {
+    throw Boom.badRequest('userCredentials was not provided');
+  }
+
   const user = await userRepository.findOneByEmailToLogin(
     userCredentials.email,
   );
@@ -61,6 +91,11 @@ const login = async (userCredentials) => {
   if (!isMatch) throw Boom.unauthorized('The password is incorrect');
 
   const accessToken = generateToken(user);
+
+  if (!accessToken) {
+    throw Boom.internal('Something went wrong signing the token');
+  }
+
   await userRepository.update(user.id, { token: accessToken });
 
   return { user, accessToken };
