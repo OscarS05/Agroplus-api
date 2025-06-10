@@ -1,10 +1,14 @@
 const express = require('express');
+
 const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
 const { animalIdSchema } = require('../animal/animal.schemas');
-const { bodyDewormingSchema, dewormingIdSchema, dewormingSchema } = require('./deworming.schemas');
+const {
+  bodyDewormingSchema,
+  dewormingIdSchema,
+} = require('./deworming.schemas');
 
 const dewormingControllers = require('./deworming.controllers');
 
@@ -53,10 +57,7 @@ const dewormingControllers = require('./deworming.controllers');
  *       401:
  *         description: Unauthorized (missing or invalid token)
  */
-routes.get('/deworming',
-  validateSession,
-  dewormingControllers.getAllDeworming
-);
+routes.get('/deworming', validateSession, dewormingControllers.getAllDeworming);
 
 /**
  * @swagger
@@ -106,11 +107,12 @@ routes.get('/deworming',
  *       401:
  *         description: Unauthorized (missing or invalid token)
  */
-routes.post('/:animalId/deworming',
+routes.post(
+  '/:animalId/deworming',
   validateSession,
   validatorHandler(animalIdSchema, 'params'),
   validatorHandler(bodyDewormingSchema, 'body'),
-  dewormingControllers.createDeworming
+  dewormingControllers.createDeworming,
 );
 
 /**
@@ -163,11 +165,12 @@ routes.post('/:animalId/deworming',
  *       404:
  *         description: Deworming record not found
  */
-routes.patch('/deworming/:dewormingId',
+routes.patch(
+  '/deworming/:dewormingId',
   validateSession,
   validatorHandler(dewormingIdSchema, 'params'),
   validatorHandler(bodyDewormingSchema, 'body'),
-  dewormingControllers.updateDeworming
+  dewormingControllers.updateDeworming,
 );
 
 /**
@@ -215,10 +218,11 @@ routes.patch('/deworming/:dewormingId',
  *       404:
  *         description: Deworming record not found
  */
-routes.delete('/deworming/:dewormingId',
+routes.delete(
+  '/deworming/:dewormingId',
   validateSession,
   validatorHandler(dewormingIdSchema, 'params'),
-  dewormingControllers.deleteDeworming
+  dewormingControllers.deleteDeworming,
 );
 
 module.exports = routes;

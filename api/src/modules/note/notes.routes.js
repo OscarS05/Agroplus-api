@@ -1,4 +1,5 @@
 const express = require('express');
+
 const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
@@ -44,10 +45,7 @@ const notesControllers = require('./notes.controllers');
  *       401:
  *         description: Unauthorized. Access token expired, invalid or not provided
  */
-routes.get('/',
-  validateSession,
-  notesControllers.getAllNotes
-);
+routes.get('/', validateSession, notesControllers.getAllNotes);
 
 /**
  * @swagger
@@ -87,10 +85,11 @@ routes.get('/',
  *       401:
  *         description: Unauthorized. Access token expired, invalid or not provided
  */
-routes.post('/',
+routes.post(
+  '/',
   validateSession,
   validatorHandler(bodyNotesSchema, 'body'),
-  notesControllers.createNote
+  notesControllers.createNote,
 );
 
 /**
@@ -141,11 +140,12 @@ routes.post('/',
  *       404:
  *         description: Note not found or does not belong to the user
  */
-routes.patch('/:noteId',
+routes.patch(
+  '/:noteId',
   validateSession,
   validatorHandler(notesIdSchema, 'params'),
   validatorHandler(bodyNotesSchema, 'body'),
-  notesControllers.updateNote
+  notesControllers.updateNote,
 );
 
 /**
@@ -189,10 +189,11 @@ routes.patch('/:noteId',
  *       404:
  *         description: Note not found or does not belong to the user
  */
-routes.delete('/:noteId',
+routes.delete(
+  '/:noteId',
   validateSession,
   validatorHandler(notesIdSchema, 'params'),
-  notesControllers.deleteNote
+  notesControllers.deleteNote,
 );
 
 module.exports = routes;

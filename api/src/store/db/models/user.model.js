@@ -20,12 +20,12 @@ const UserSchema = {
   },
   password: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
-    defaultValue: 'basic'
+    defaultValue: 'basic',
   },
   token: {
     type: DataTypes.STRING,
@@ -35,26 +35,26 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
-    defaultValue: DataTypes.NOW
-  }
-}
+    defaultValue: DataTypes.NOW,
+  },
+};
 
 class User extends Model {
   static associate(models) {
     this.hasMany(models.Animal, {
       foreignKey: 'userId',
-      as: 'animals'
+      as: 'animals',
     });
   }
 
-  static config(sequelize){
+  static config(sequelize) {
     return {
       sequelize,
       tableName: USER_TABLE,
       modelName: 'User',
-      timestamps: false
-    }
+      timestamps: false,
+    };
   }
 }
 
-module.exports = { UserSchema, USER_TABLE, User }
+module.exports = { UserSchema, USER_TABLE, User };

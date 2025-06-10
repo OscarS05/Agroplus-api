@@ -16,8 +16,8 @@ const clearCookie = (res, name) => {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'Strict' : 'Lax',
-    expires: new Date(0)
+    expires: new Date(0),
   });
-}
+};
 
 module.exports = { setCookieAccessToken, clearCookie };

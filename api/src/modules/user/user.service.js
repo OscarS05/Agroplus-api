@@ -6,21 +6,33 @@ const { v4: uuidv4 } = require('uuid');
 const { config } = require('../../../config/config');
 const userRepository = require('./user.repository');
 
+const generateToken = (user) => {
+  const payload = {
+    sub: user?.id || user?.sub,
+    role: user.role,
+  };
+
+  const accessToken = jwt.sign(payload, config.jwtAccessSecret, {
+    expiresIn: '15d',
+  });
+  return accessToken;
+};
+
 const getAllUsers = async () => {
-  return await userRepository.findAllUsers();
-}
+  return userRepository.findAllUsers();
+};
 
 const getUser = async (userId) => {
-  return await userRepository.findOne(userId);
-}
+  return userRepository.findOne(userId);
+};
 
 const getUserByEmail = async (email) => {
-  return await userRepository.findOneByEmail(email);
-}
+  return userRepository.findOneByEmail(email);
+};
 
 const createUser = async (userData) => {
   const userAlreadyExist = await userRepository.findOneByEmail(userData.email);
-  if(userAlreadyExist?.id) throw Boom.conflict('User already exists');
+  if (userAlreadyExist?.id) throw Boom.conflict('User already exists');
 
   const user = {
     id: uuidv4(),
@@ -29,37 +41,30 @@ const createUser = async (userData) => {
     password: await bcrypt.hash(userData?.password, 10),
     role: 'basic',
     createdAt: new Date().toISOString().split('T')[0],
-  }
+  };
 
   const newUser = await userRepository.create(user);
-  if(!newUser?.id) throw Boom.badRequest('Something went wrong creating the user');
+  if (!newUser?.id)
+    throw Boom.badRequest('Something went wrong creating the user');
 
   delete newUser?.password;
   return newUser;
-}
+};
 
 const login = async (userCredentials) => {
-  const user = await userRepository.findOneByEmailToLogin(userCredentials.email);
-  if(!user?.id) throw Boom.conflict('User does not exists');
+  const user = await userRepository.findOneByEmailToLogin(
+    userCredentials.email,
+  );
+  if (!user?.id) throw Boom.conflict('User does not exists');
 
   const isMatch = await bcrypt.compare(userCredentials.password, user.password);
-  if(!isMatch) throw Boom.unauthorized('The password is incorrect');
+  if (!isMatch) throw Boom.unauthorized('The password is incorrect');
 
   const accessToken = generateToken(user);
   await userRepository.update(user.id, { token: accessToken });
 
   return { user, accessToken };
-}
-
-const generateToken = (user) => {
-  const payload = {
-    sub: user?.id || user?.sub,
-    role: user.role
-  }
-
-  const accessToken = jwt.sign(payload, config.jwtAccessSecret, { expiresIn: '15d' });
-  return accessToken;
-}
+};
 
 module.exports = {
   getUserByEmail,
@@ -67,4 +72,4 @@ module.exports = {
   createUser,
   getAllUsers,
   login,
-}
+};

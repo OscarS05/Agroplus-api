@@ -1,7 +1,7 @@
 const sequelize = require('../../store/db/sequelize');
 
 const findAllVaccinations = async (userId, filters) => {
-  return await sequelize.models.Vaccination.findAll({
+  return sequelize.models.Vaccination.findAll({
     where: filters,
     include: [
       {
@@ -12,31 +12,38 @@ const findAllVaccinations = async (userId, filters) => {
       },
     ],
   });
-}
+};
 
 const findOne = async (userId, vaccinationId) => {
-  return await sequelize.models.Vaccination.findOne({
+  return sequelize.models.Vaccination.findOne({
     where: { id: vaccinationId },
-    include: [{
-      model: sequelize.models.Animal,
-      as: 'animal',
-      attributes: ['id', 'code', 'breed'],
-      where: { userId },
-    }]
+    include: [
+      {
+        model: sequelize.models.Animal,
+        as: 'animal',
+        attributes: ['id', 'code', 'breed'],
+        where: { userId },
+      },
+    ],
   });
-}
+};
 
 const create = async (vaccinationData) => {
-  return await sequelize.models.Vaccination.create(vaccinationData);
-}
+  return sequelize.models.Vaccination.create(vaccinationData);
+};
 
 const update = async (animalId, vaccinationData) => {
-  return await sequelize.models.Vaccination.update(vaccinationData, { where: { id: animalId }, returning: true });
-}
+  return sequelize.models.Vaccination.update(vaccinationData, {
+    where: { id: animalId },
+    returning: true,
+  });
+};
 
 const destroy = async (vaccinationId) => {
-  return await sequelize.models.Vaccination.destroy({ where: { id: vaccinationId } });
-}
+  return sequelize.models.Vaccination.destroy({
+    where: { id: vaccinationId },
+  });
+};
 
 module.exports = {
   findAllVaccinations,
@@ -44,4 +51,4 @@ module.exports = {
   create,
   update,
   destroy,
-}
+};

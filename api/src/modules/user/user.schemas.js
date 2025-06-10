@@ -3,7 +3,10 @@ const Joi = require('joi');
 const id = Joi.string().uuid();
 const name = Joi.string().min(1).max(255);
 const email = Joi.string().email();
-const password = Joi.string().min(8).max(128).pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};\'":|,.<>\\/?]+$'));
+const password = Joi.string()
+  .min(8)
+  .max(128)
+  .pattern('^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};\'":|,.<>\\/?]+$');
 
 const userEmailSchema = Joi.object({
   email: email.required(),

@@ -27,32 +27,32 @@ const NoteSchema = {
       key: 'id',
     },
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
   },
-}
+};
 
 class Note extends Model {
   static associate(models) {
     this.belongsTo(models.User, {
       as: 'user',
-      foreignKey: 'userId'
+      foreignKey: 'userId',
     });
   }
 
-  static config(sequelize){
+  static config(sequelize) {
     return {
       sequelize,
       tableName: NOTES_TABLE,
       modelName: 'Note',
-      timestamps: false
-    }
+      timestamps: false,
+    };
   }
 }
 
-module.exports = { NoteSchema, NOTES_TABLE, Note }
+module.exports = { NoteSchema, NOTES_TABLE, Note };

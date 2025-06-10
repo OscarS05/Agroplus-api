@@ -27,30 +27,29 @@ const DewormingSchema = {
       key: 'id',
     },
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   },
   registeredAt: {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'registered_at',
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
   },
-}
+};
 
 class Deworming extends Model {
   static associate(models) {
     this.belongsTo(models.Animal, { foreignKey: 'animalId', as: 'animal' });
-
   }
 
-  static config(sequelize){
+  static config(sequelize) {
     return {
       sequelize,
       tableName: DEWORMING_TABLE,
       modelName: 'Deworming',
-      timestamps: false
-    }
+      timestamps: false,
+    };
   }
 }
 
-module.exports = { DewormingSchema, DEWORMING_TABLE, Deworming }
+module.exports = { DewormingSchema, DEWORMING_TABLE, Deworming };

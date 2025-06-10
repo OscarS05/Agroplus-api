@@ -5,15 +5,15 @@ const setupModels = require('./models/index');
 
 const options = {
   dialect: 'postgres',
-  logging: config.isProd ? false : console.log,
-}
+  logging: config.isProd ? false : console.info,
+};
 
 if (config.isProd) {
   options.dialectOptions = {
     ssl: {
-      rejectUnauthorized: false
-    }
-  }
+      rejectUnauthorized: false,
+    },
+  };
 }
 
 const sequelize = new Sequelize(config.dbUrl, options);
@@ -27,7 +27,6 @@ const sequelize = new Sequelize(config.dbUrl, options);
     process.exit(1);
   }
 })();
-
 
 setupModels(sequelize);
 

@@ -1,9 +1,14 @@
 const express = require('express');
+
 const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
-const { animalIdSchema, createAnimalsSchema, updateAnimalsSchema } = require('./animal.schemas');
+const {
+  animalIdSchema,
+  createAnimalsSchema,
+  updateAnimalsSchema,
+} = require('./animal.schemas');
 
 const animalControllers = require('./animal.controllers');
 
@@ -83,10 +88,7 @@ const animalControllers = require('./animal.controllers');
  *       500:
  *         description: Internal server error
  */
-routes.get('/',
-  validateSession,
-  animalControllers.getAllAnimals
-);
+routes.get('/', validateSession, animalControllers.getAllAnimals);
 
 /**
  * @swagger
@@ -131,10 +133,11 @@ routes.get('/',
  *       401:
  *         description: Missing or invalid access token (cookie)
  */
-routes.post('/',
+routes.post(
+  '/',
   validateSession,
   validatorHandler(createAnimalsSchema, 'body'),
-  animalControllers.createAnimal
+  animalControllers.createAnimal,
 );
 
 /**
@@ -188,11 +191,12 @@ routes.post('/',
  *       404:
  *         description: Animal not found or does not belong to the user
  */
-routes.patch('/:animalId',
+routes.patch(
+  '/:animalId',
   validateSession,
   validatorHandler(animalIdSchema, 'params'),
   validatorHandler(updateAnimalsSchema, 'body'),
-  animalControllers.updateAnimal
+  animalControllers.updateAnimal,
 );
 
 /**
@@ -239,10 +243,11 @@ routes.patch('/:animalId',
  *       404:
  *         description: Animal not found or does not belong to the user
  */
-routes.delete('/:animalId',
+routes.delete(
+  '/:animalId',
   validateSession,
   validatorHandler(animalIdSchema, 'params'),
-  animalControllers.deleteAnimal
+  animalControllers.deleteAnimal,
 );
 
 module.exports = routes;

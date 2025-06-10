@@ -1,22 +1,21 @@
-const { ValidationError } = require("sequelize");
-const Boom = require('@hapi/boom');
+const { ValidationError } = require('sequelize');
 
-function logErrors(err, req, res, next){
+function logErrors(err, req, res, next) {
   next(err);
 }
 
-function ormErrorHandler(err, req, res, next){
-  if(err instanceof ValidationError){
+function ormErrorHandler(err, req, res, next) {
+  if (err instanceof ValidationError) {
     res.status(409).json({
       statusCode: 409,
       message: err.name,
-      errors: err.errors
+      errors: err.errors,
     });
   }
   next(err);
 }
 
-function boomErrorHandler(err, req, res, next){
+function boomErrorHandler(err, req, res, next) {
   if (err.isBoom) {
     const { output } = err;
     res.status(output.statusCode).json(output.payload);
@@ -25,8 +24,9 @@ function boomErrorHandler(err, req, res, next){
   }
 }
 
-function errorHandler(err, req, res, next){
-  console.log('err:', err);
+// eslint-disable-next-line no-unused-vars
+function errorHandler(err, req, res, next) {
+  console.error('err:', err);
   res.status(500).json({
     message: err,
     stack: err.message,

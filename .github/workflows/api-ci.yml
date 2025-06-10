@@ -1,0 +1,90 @@
+name: API CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - tests
+    paths:
+      - "api/**"
+      - ".github/workflows/api-ci.yml"
+  pull_request:
+    branches:
+      - main
+      - develop
+      - tests
+    paths:
+      - "api/**"
+      - ".github/workflows/api-ci.yml"
+
+defaults:
+  run:
+    working-directory: ./api
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Setup environment variables
+        run: |
+          echo "JWT_ACCESS_SECRET=test-ACCESS-secret" >> $GITHUB_ENV
+          echo "NODE_ENV=development" >> $GITHUB_ENV
+      - name: install dependencies
+        run: npm ci
+      - name: run unit tests
+        run: npm run test
+
+  e2e:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20
+
+    services:
+      postgres-e2e:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: db_e2e
+          POSTGRES_USER: e2e
+          POSTGRES_PASSWORD: e2e123
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: install dependencies
+        run: npm ci
+      - name: run e2e
+        run: npm run e2e:ci
+        env:
+          PORT: 3000
+          DATABASE_URL: postgres://e2e:e2e123@postgres-e2e:5432/db_e2e
+          JWT_ACCESS_SECRET: access-secret-test

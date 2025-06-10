@@ -27,32 +27,32 @@ const VaccinationSchema = {
       key: 'id',
     },
     onUpdate: 'CASCADE',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   },
   registeredAt: {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'registered_at',
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
   },
-}
+};
 
 class Vaccination extends Model {
   static associate(models) {
     this.belongsTo(models.Animal, {
       as: 'animal',
-      foreignKey: 'animalId'
+      foreignKey: 'animalId',
     });
   }
 
-  static config(sequelize){
+  static config(sequelize) {
     return {
       sequelize,
       tableName: VACCINATION_TABLE,
       modelName: 'Vaccination',
-      timestamps: false
-    }
+      timestamps: false,
+    };
   }
 }
 
-module.exports = { VaccinationSchema, VACCINATION_TABLE, Vaccination }
+module.exports = { VaccinationSchema, VACCINATION_TABLE, Vaccination };

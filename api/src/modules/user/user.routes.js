@@ -1,16 +1,24 @@
 const express = require('express');
+
 const routes = express.Router();
 const authRoutes = express.Router();
 
-const { validateSession, limiter } = require('../../middlewares/authentication');
+const {
+  validateSession,
+  limiter,
+} = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
-const { userEmailSchema, signUpSchema, loginSchema } = require('./user.schemas');
+const {
+  userEmailSchema,
+  signUpSchema,
+  loginSchema,
+} = require('./user.schemas');
 
 const userControllers = require('./user.controllers');
 
 const LOGIN_LIMITER_MESSAGE = {
   error: 'Too many login attempts',
-  message: 'Please wait 15 minutes and try again.'
+  message: 'Please wait 15 minutes and try again.',
 };
 
 /**
@@ -42,10 +50,7 @@ const LOGIN_LIMITER_MESSAGE = {
  *       500:
  *         description: Internal server error
  */
-routes.get('/',
-  validateSession,
-  userControllers.getAllUsers
-);
+routes.get('/', validateSession, userControllers.getAllUsers);
 
 /**
  * @swagger
@@ -89,10 +94,11 @@ routes.get('/',
  *       500:
  *         description: Internal server error
  */
-routes.get('/:email',
+routes.get(
+  '/:email',
   validateSession,
   validatorHandler(userEmailSchema, 'params'),
-  userControllers.getOneUser
+  userControllers.getOneUser,
 );
 
 /**
@@ -120,9 +126,10 @@ routes.get('/:email',
  *       500:
  *         description: Internal server error
  */
-authRoutes.post('/sign-up',
+authRoutes.post(
+  '/sign-up',
   validatorHandler(signUpSchema, 'body'),
-  userControllers.createUser
+  userControllers.createUser,
 );
 
 /**
@@ -158,10 +165,11 @@ authRoutes.post('/sign-up',
  *       500:
  *         description: Internal server error
  */
-authRoutes.post('/login',
+authRoutes.post(
+  '/login',
   limiter(5, 15 * 60 * 100, LOGIN_LIMITER_MESSAGE),
   validatorHandler(loginSchema, 'body'),
-  userControllers.login
+  userControllers.login,
 );
 
 module.exports = { routes, authRoutes };

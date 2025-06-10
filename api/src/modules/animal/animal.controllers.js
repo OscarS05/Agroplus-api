@@ -15,7 +15,7 @@ const getAllAnimals = async (req, res, next) => {
       ...(animalType && { animalType }),
       ...(breed && { breed }),
       ...(sex && { sex }),
-    }
+    };
 
     const animals = await animalService.getAllAnimals(filters);
 
@@ -23,22 +23,33 @@ const getAllAnimals = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const createAnimal = async (req, res, next) => {
   try {
     const animalData = req.body;
     const userId = req.user.sub;
 
-    const newAnimal = await animalService.createAnimal({ ...animalData, userId });
-    if(!newAnimal?.id) throw Boom.badRequest('Create animal operation returns null');
-    const formattedUpdatedAnimal = await animalService.getAnimal(userId, newAnimal.id);
+    const newAnimal = await animalService.createAnimal({
+      ...animalData,
+      userId,
+    });
+    if (!newAnimal?.id)
+      throw Boom.badRequest('Create animal operation returns null');
+    const formattedUpdatedAnimal = await animalService.getAnimal(
+      userId,
+      newAnimal.id,
+    );
 
-    res.status(201).json({ message: 'Animal was successfully created', success: true, newAnimal: formattedUpdatedAnimal });
+    res.status(201).json({
+      message: 'Animal was successfully created',
+      success: true,
+      newAnimal: formattedUpdatedAnimal,
+    });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const updateAnimal = async (req, res, next) => {
   try {
@@ -46,15 +57,27 @@ const updateAnimal = async (req, res, next) => {
     const animalData = req.body;
     const userId = req.user.sub;
 
-    const updatedAnimal = await animalService.updateAnimal(userId, animalId, animalData);
-    if(!updatedAnimal?.id) throw Boom.badRequest('Update animal operation returns null');
-    const formattedUpdatedAnimal = await animalService.getAnimal(userId, updatedAnimal.id);
+    const updatedAnimal = await animalService.updateAnimal(
+      userId,
+      animalId,
+      animalData,
+    );
+    if (!updatedAnimal?.id)
+      throw Boom.badRequest('Update animal operation returns null');
+    const formattedUpdatedAnimal = await animalService.getAnimal(
+      userId,
+      updatedAnimal.id,
+    );
 
-    res.status(200).json({ message: 'Animal was successfully updated', success: true, updatedAnimal: formattedUpdatedAnimal });
+    res.status(200).json({
+      message: 'Animal was successfully updated',
+      success: true,
+      updatedAnimal: formattedUpdatedAnimal,
+    });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const deleteAnimal = async (req, res, next) => {
   try {
@@ -62,18 +85,22 @@ const deleteAnimal = async (req, res, next) => {
     const userId = req.user.sub;
 
     const deletedAnimal = await animalService.deleteAnimal(userId, animalId);
-    if(deletedAnimal === 0) throw Boom.badRequest('Delete animal operation returns 0 rows affected');
+    if (deletedAnimal === 0)
+      throw Boom.badRequest('Delete animal operation returns 0 rows affected');
 
-    res.status(200).json({ message: 'Animal was successfully deleted', success: true, deletedAnimal });
+    res.status(200).json({
+      message: 'Animal was successfully deleted',
+      success: true,
+      deletedAnimal,
+    });
   } catch (error) {
     next(error);
   }
-}
-
+};
 
 module.exports = {
   createAnimal,
   updateAnimal,
   getAllAnimals,
   deleteAnimal,
-}
+};

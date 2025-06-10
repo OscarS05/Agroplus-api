@@ -1,7 +1,7 @@
 const sequelize = require('../../store/db/sequelize');
 
 const findAllAnimals = async (filters) => {
-  return await sequelize.models.Animal.findAll({
+  return sequelize.models.Animal.findAll({
     where: filters,
     include: [
       {
@@ -18,13 +18,13 @@ const findAllAnimals = async (filters) => {
         model: sequelize.models.User,
         as: 'user',
         attributes: ['id', 'name'],
-      }
-    ]
+      },
+    ],
   });
-}
+};
 
 const findOne = async (userId, animalId) => {
-  return await sequelize.models.Animal.findOne({
+  return sequelize.models.Animal.findOne({
     where: { userId, id: animalId },
     include: [
       {
@@ -41,22 +41,27 @@ const findOne = async (userId, animalId) => {
         model: sequelize.models.User,
         as: 'user',
         attributes: ['id', 'name'],
-      }
-    ]
+      },
+    ],
   });
-}
+};
 
 const create = async (animalData) => {
-  return await sequelize.models.Animal.create(animalData);
-}
+  return sequelize.models.Animal.create(animalData);
+};
 
 const update = async (animalId, animalData) => {
-  return await sequelize.models.Animal.update(animalData, { where: { id: animalId }, returning: true });
-}
+  return sequelize.models.Animal.update(animalData, {
+    where: { id: animalId },
+    returning: true,
+  });
+};
 
 const destroy = async (userId, animalId) => {
-  return await sequelize.models.Animal.destroy({ where: { userId, id: animalId } });
-}
+  return sequelize.models.Animal.destroy({
+    where: { userId, id: animalId },
+  });
+};
 
 module.exports = {
   findAllAnimals,
@@ -64,4 +69,4 @@ module.exports = {
   create,
   update,
   destroy,
-}
+};

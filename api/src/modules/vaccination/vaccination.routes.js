@@ -1,10 +1,14 @@
 const express = require('express');
+
 const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
 const { animalIdSchema } = require('../animal/animal.schemas');
-const { bodyVaccinationSchema, vaccinationIdSchema, vaccinationSchema } = require('./vaccination.schemas');
+const {
+  bodyVaccinationSchema,
+  vaccinationIdSchema,
+} = require('./vaccination.schemas');
 
 const vaccinationControllers = require('./vaccination.controllers');
 
@@ -53,9 +57,10 @@ const vaccinationControllers = require('./vaccination.controllers');
  *       401:
  *         description: Unauthorized. Access token expired, invalid or not provided
  */
-routes.get('/vaccination',
+routes.get(
+  '/vaccination',
   validateSession,
-  vaccinationControllers.getAllVaccination
+  vaccinationControllers.getAllVaccination,
 );
 
 /**
@@ -105,11 +110,12 @@ routes.get('/vaccination',
  *       404:
  *         description: Not found. Animal id not found or not belongs to the authenticated user
  */
-routes.post('/:animalId/vaccination',
+routes.post(
+  '/:animalId/vaccination',
   validateSession,
   validatorHandler(animalIdSchema, 'params'),
   validatorHandler(bodyVaccinationSchema, 'body'),
-  vaccinationControllers.createVaccination
+  vaccinationControllers.createVaccination,
 );
 
 /**
@@ -159,11 +165,12 @@ routes.post('/:animalId/vaccination',
  *       401:
  *         description: Unauthorized. Access token expired, invalid or not provided
  */
-routes.patch('/vaccination/:vaccinationId',
+routes.patch(
+  '/vaccination/:vaccinationId',
   validateSession,
   validatorHandler(vaccinationIdSchema, 'params'),
   validatorHandler(bodyVaccinationSchema, 'body'),
-  vaccinationControllers.updateVaccination
+  vaccinationControllers.updateVaccination,
 );
 
 /**
@@ -209,10 +216,11 @@ routes.patch('/vaccination/:vaccinationId',
  *       404:
  *         description: Vaccination record not found or not belongs to the user authenticated
  */
-routes.delete('/vaccination/:vaccinationId',
+routes.delete(
+  '/vaccination/:vaccinationId',
   validateSession,
   validatorHandler(vaccinationIdSchema, 'params'),
-  vaccinationControllers.deleteVaccination
+  vaccinationControllers.deleteVaccination,
 );
 
 module.exports = routes;

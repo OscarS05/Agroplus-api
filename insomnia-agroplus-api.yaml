@@ -1,0 +1,608 @@
+type: spec.insomnia.rest/5.0
+name: agroplus
+meta:
+  id: wrk_4264e90551c04f93907d67b9733de517
+  created: 1744504861024
+  modified: 1744504861024
+  description: ""
+collection:
+  - name: users
+    meta:
+      id: fld_8feded3966af4ea8bac5144072fc6f1c
+      created: 1744504884188
+      modified: 1744504913916
+      sortKey: -1744504884188
+      description: ""
+    children:
+      - url: "{{ _.api }}/v1/users/"
+        name: get user
+        meta:
+          id: req_46fcf1125e5a452caa95dfdbc4d5eb92
+          created: 1744504915237
+          modified: 1744513359299
+          isPrivate: false
+          description: ""
+          sortKey: -1744504915237
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/auth/sign-up"
+        name: sign up
+        meta:
+          id: req_0781312ce5434541b99e1c3c6f51f8c2
+          created: 1744504921561
+          modified: 1744771261812
+          isPrivate: false
+          description: ""
+          sortKey: -1744504921561
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "admin@email.com",
+            	"name": "admin name",
+            	"password": "O123456@k"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/auth/login"
+        name: login
+        meta:
+          id: req_91838301c8524c14954193868d379fb1
+          created: 1744504948388
+          modified: 1744568883626
+          isPrivate: false
+          description: ""
+          sortKey: -1744504927512
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "admin@email.com",
+            	"password": "O123456@k"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/users/"
+        name: get users
+        meta:
+          id: req_b65eb12c60d44b61b90d4db584adae94
+          created: 1744568298961
+          modified: 1744568298961
+          isPrivate: false
+          description: ""
+          sortKey: -1744413466456.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: animals
+    meta:
+      id: fld_c314e9694a5c4115b8824dbe6b872988
+      created: 1744504888484
+      modified: 1744591571965
+      sortKey: -1744504888484
+      description: ""
+    children:
+      - url: "{{ _.api }}/v1/animals"
+        name: get all animals
+        meta:
+          id: req_941e3c574d8946f2a43092812e57a926
+          created: 1744591572902
+          modified: 1744679894292
+          isPrivate: false
+          description: ""
+          sortKey: -1744591572902
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/"
+        name: create animal
+        meta:
+          id: req_3731175034ab4e55bbf6aa7f87c46382
+          created: 1744591574430
+          modified: 1744772995867
+          isPrivate: false
+          description: ""
+          sortKey: -1744591574430
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"livestockType": "Bovino",
+              "animalType": "Vaca",
+              "code": "BOV-001",
+              "breed": "Angus",
+              "sex": "Female",
+            	"fatherId": "e9ea0cea-62de-47be-b17a-4f6609e945a4"
+            	}
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/eeb5ffa5-b439-48a1-9826-b1a566e28a3f"
+        name: update animal
+        meta:
+          id: req_80bc6b5cd899488cbe41cd05167bcfab
+          created: 1744591575511
+          modified: 1744772945503
+          isPrivate: false
+          description: ""
+          sortKey: -1744591575511
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"livestockType": "Bovino",
+              "animalType": "Vaca",
+              "code": "BAV-111",
+              "breed": "Angus"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/eeb5ffa5-b439-48a1-9826-b1a566e28a3f"
+        name: delete animal
+        meta:
+          id: req_1b632b533d114b778e94fd1ad707098b
+          created: 1744591576623
+          modified: 1744772970842
+          isPrivate: false
+          description: ""
+          sortKey: -1744591576623
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: deworming
+    meta:
+      id: fld_f1e8e302c37f4e43895c09f092643182
+      created: 1744680834668
+      modified: 1744680838763
+      sortKey: -1744504897963
+      description: ""
+    children:
+      - url: "{{ _.api }}/v1/animals/deworming"
+        name: get all deworming
+        meta:
+          id: req_9a4953b924b643fb8900d26b2e9a98da
+          created: 1744680834671
+          modified: 1744688462831
+          isPrivate: false
+          description: ""
+          sortKey: -1744591572902
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/d0759f76-a119-4be0-ad33-e93595f56be8/deworming"
+        name: create deworming
+        meta:
+          id: req_4f9c81280b7c41bf80769f0701f64b79
+          created: 1744680834673
+          modified: 1744773251955
+          isPrivate: false
+          description: ""
+          sortKey: -1744591574430
+        method: POST
+        body:
+          mimeType: application/json
+          text: >
+            {
+              "dewormer": "Ivermectin 2%",
+              "description": "Aplicación subcutánea para control de parásitos internos y externos."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/deworming/04dbe255-50de-4ae1-8058-e101890f09f0"
+        name: update deworming
+        meta:
+          id: req_22e4795e71224acd85c31aaacb32021c
+          created: 1744680834675
+          modified: 1744773340177
+          isPrivate: false
+          description: ""
+          sortKey: -1744591575511
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "dewormer": "Ivermectin 3%",
+              "description": "Actualizado"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/deworming/4"
+        name: delete deworming
+        meta:
+          id: req_48a7afaac1f44909a604d44dca02f3c2
+          created: 1744680834677
+          modified: 1744767562152
+          isPrivate: false
+          description: ""
+          sortKey: -1744591576623
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: vaccination
+    meta:
+      id: fld_1c8dd4f6009a41b795e76daf15a41086
+      created: 1744685975987
+      modified: 1744685978006
+      sortKey: -1744504904962.5
+      description: ""
+    children:
+      - url: "{{ _.api }}/v1/animals/vaccination"
+        name: get all vaccination
+        meta:
+          id: req_f2a906e4183a4895b6aaf6bd56b640b4
+          created: 1744685975989
+          modified: 1744688868072
+          isPrivate: false
+          description: ""
+          sortKey: -1744591572902
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/d0759f76-a119-4be0-ad33-e93595f56be8/vaccination/"
+        name: create vaccination
+        meta:
+          id: req_617bd7208296453bb4933bc86f294053
+          created: 1744685976011
+          modified: 1744773533946
+          isPrivate: false
+          description: ""
+          sortKey: -1744591574430
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "vaccine": "Vaccine 2%",
+              "description": "Description 1."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/vaccination/065f441b-64ba-411a-97d1-7cbf15443732"
+        name: update vaccination
+        meta:
+          id: req_71449e44cece4907b4d481c71e1dc02d
+          created: 1744685976013
+          modified: 1744773548216
+          isPrivate: false
+          description: ""
+          sortKey: -1744591575511
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "vaccine": "Ivermectin 0.5%",
+              "description": "Updated"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/animals/vaccination/4"
+        name: delete vaccination
+        meta:
+          id: req_032f1c379f644b5b8b822afc116157ea
+          created: 1744685976015
+          modified: 1744768126064
+          isPrivate: false
+          description: ""
+          sortKey: -1744591576623
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: notes
+    meta:
+      id: fld_eb75fc6e865e4bd7a24ee3d2fa0dc062
+      created: 1744768398391
+      modified: 1744768400847
+      sortKey: -1744504905062.5
+      description: ""
+    children:
+      - url: "{{ _.api }}/v1/notes"
+        name: get all notes
+        meta:
+          id: req_a6b4023a23f145b6816fe1f95e0758ec
+          created: 1744768398392
+          modified: 1744768423870
+          isPrivate: false
+          description: ""
+          sortKey: -1744591572902
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/notes"
+        name: create note
+        meta:
+          id: req_6c4a288ae2cd45f6b6de8c407261df9d
+          created: 1744768398393
+          modified: 1744769832469
+          isPrivate: false
+          description: ""
+          sortKey: -1744591574430
+        method: POST
+        body:
+          mimeType: application/json
+          text: >
+            {
+              "title": "Falta purgar cerdos",
+              "description": "Los cerdos que hay que purgar son: ..., ..., ..., ... ."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/notes/f42db923-7c41-4b11-ba2e-dbf7638cacae"
+        name: update note
+        meta:
+          id: req_0dea0e4b8ae64367b448bdd528f35572
+          created: 1744768398394
+          modified: 1744773725342
+          isPrivate: false
+          description: ""
+          sortKey: -1744591575511
+        method: PATCH
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "title": "Desparasitación de cerdos:",
+              "description": "tuki, tuki, tuki."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api }}/v1/notes/1"
+        name: delete note
+        meta:
+          id: req_6c7ee303fc4b44cf99de7c5240bfb0ac
+          created: 1744768398395
+          modified: 1744768438613
+          isPrivate: false
+          description: ""
+          sortKey: -1744591576623
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b1c3334de9e93c0130fb529317de92072918de5b
+    created: 1744504861030
+    modified: 1744831299856
+  cookies:
+    - key: accessToken
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZjI2ZDVhYS1jM2VlLTRjZDMtODZmZS05MmUzYzY1NzMxMDEiLCJyb2xlIjoiYmFzaWMiLCJpYXQiOjE3NDQ4MzEyOTksImV4cCI6MTc0NDgzNDg5OX0.Xwtm92DothPpPM3ueNo7ropB0sY0_h6D7zUOTUmy4LM
+      maxAge: 3600
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-04-14T01:15:06.662Z
+      lastAccessed: 2025-04-16T19:21:39.856Z
+      sameSite: lax
+      id: b6f4b3b8-e999-4f34-8df9-678757483728
+environments:
+  name: Base Environment
+  meta:
+    id: env_b1c3334de9e93c0130fb529317de92072918de5b
+    created: 1744504861028
+    modified: 1744505117198
+    isPrivate: false
+  data:
+    "": ""
+  subEnvironments:
+    - name: Develop
+      meta:
+        id: env_a6e5cdbd11ec496da4f5a56c6f449b16
+        created: 1744505097192
+        modified: 1744505147377
+        isPrivate: false
+        sortKey: 1744505097192
+      data:
+        api: localhost:3001/api
+      color: "#22ff1f"
+spec:
+  meta:
+    id: spc_2863130a0bc64aa0a72ae293fbb16c48
+    created: 1744504861026
+    modified: 1744687139554

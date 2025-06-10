@@ -99,6 +99,8 @@ web_modules/
 .env.production.local
 .env.local
 
+coverage_e2e/
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
