@@ -4,15 +4,10 @@ const notesService = require('./notes.service');
 
 const getAllNotes = async (req, res, next) => {
   try {
-    const { title } = req.query;
+    const { query } = req;
     const userId = req.user.sub;
 
-    const filters = {
-      userId,
-      ...(title && { title }),
-    };
-
-    const note = await notesService.getAllNotes(filters);
+    const note = await notesService.getAllNotes({ ...query, userId });
 
     res.status(200).json({ note, sucess: true });
   } catch (error) {

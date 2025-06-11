@@ -4,17 +4,12 @@ const vaccinationService = require('./vaccination.service');
 
 const getAllVaccination = async (req, res, next) => {
   try {
-    const { vaccine, animalId } = req.query;
+    const { query } = req;
     const userId = req.user.sub;
-
-    const filters = {
-      ...(vaccine && { vaccine }),
-      ...(animalId && { animalId }),
-    };
 
     const vaccinations = await vaccinationService.getAllVaccination(
       userId,
-      filters,
+      query,
     );
 
     res.status(200).json({ vaccinations, sucess: true });
