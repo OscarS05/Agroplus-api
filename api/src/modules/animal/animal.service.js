@@ -18,20 +18,56 @@ const formatData = (animalData) => {
   };
 };
 
-const getAllAnimals = async (filters) => {
+const buildFilters = (query) => {
+  const { code, livestockType, animalType, breed, sex, animalId, userId } =
+    query;
+
+  return {
+    userId,
+    ...(animalId && { id: animalId }),
+    ...(code && { code }),
+    ...(livestockType && { livestockType }),
+    ...(animalType && { animalType }),
+    ...(breed && { breed }),
+    ...(sex && { sex }),
+  };
+};
+
+const getAllAnimals = async (query) => {
+  if (!query || typeof query !== 'object') {
+    throw Boom.badRequest('query was not provided');
+  }
+
+  const filters = buildFilters(query);
+
   const animals = await animalRepository.findAllAnimals(filters);
-  if (!animals?.length) return [];
+  if (!animals?.length === 0) return [];
 
   return animals.map((animal) => formatData(animal));
 };
 
 const getAnimal = async (userId, animalId) => {
+  if (!userId) throw Boom.badRequest('userId was not provided');
+  if (!animalId) throw Boom.badRequest('animalId was not provided');
+
   const animal = await animalRepository.findOne(userId, animalId);
   if (!animal?.id) throw Boom.notFound('Animal does not exist');
+
   return formatData(animal);
 };
 
 const createAnimal = async (animalData) => {
+  if (
+    !animalData?.livestockType ||
+    !animalData?.animalType ||
+    !animalData?.code ||
+    !animalData?.breed ||
+    !animalData?.sex ||
+    !animalData?.userId
+  ) {
+    throw Boom.badRequest('Some values were not provided');
+  }
+
   const animal = {
     id: uuidv4(),
     livestockType: animalData.livestockType,
@@ -56,6 +92,10 @@ const updateAnimal = async (userId, animalId, animalData) => {
   const animal = await animalRepository.findOne(userId, animalId);
   if (!animal?.id) throw Boom.conflict('Animal does not exists');
 
+  if (Object.entries(animalData).length === 0) {
+    throw Boom.badRequest('No data was provided to update the animal');
+  }
+
   const formattedAnimalData = {
     ...(animalData.livestockType && {
       livestockType: animalData.livestockType,
@@ -67,6 +107,11 @@ const updateAnimal = async (userId, animalId, animalData) => {
     ...(animalData.motherId && { motherId: animalData.motherId }),
     ...(animalData.fatherId && { fatherId: animalData.fatherId }),
   };
+
+  if (Object.keys(formattedAnimalData).length === 0) {
+    throw Boom.badRequest('There is no data to update');
+  }
+
   const [updatedRows, [updatedAnimal]] = await animalRepository.update(
     animalId,
     formattedAnimalData,
@@ -78,7 +123,18 @@ const updateAnimal = async (userId, animalId, animalData) => {
 };
 
 const deleteAnimal = async (userId, animalId) => {
-  return animalRepository.destroy(userId, animalId);
+  if (!userId) throw Boom.badRequest('userId was not provided');
+  if (!animalId) throw Boom.badRequest('animalId was not provided');
+
+  const deletedRows = await animalRepository.destroy(userId, animalId);
+
+  if (deletedRows === 0) {
+    throw Boom.badRequest(
+      'Something went wrong deleting the animal or the animal does not exist',
+    );
+  }
+
+  return deletedRows;
 };
 
 module.exports = {

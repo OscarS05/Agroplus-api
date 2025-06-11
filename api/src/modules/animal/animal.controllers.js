@@ -4,22 +4,12 @@ const animalService = require('./animal.service');
 
 const getAllAnimals = async (req, res, next) => {
   try {
-    const { code, livestockType, animalType, breed, sex, animalId } = req.query;
+    const { query } = req;
     const userId = req.user.sub;
 
-    const filters = {
-      userId,
-      ...(animalId && { id: animalId }),
-      ...(code && { code }),
-      ...(livestockType && { livestockType }),
-      ...(animalType && { animalType }),
-      ...(breed && { breed }),
-      ...(sex && { sex }),
-    };
+    const animals = await animalService.getAllAnimals({ ...query, userId });
 
-    const animals = await animalService.getAllAnimals(filters);
-
-    res.status(200).json({ animals, sucess: true });
+    res.status(200).json({ animals });
   } catch (error) {
     next(error);
   }
@@ -43,7 +33,6 @@ const createAnimal = async (req, res, next) => {
 
     res.status(201).json({
       message: 'Animal was successfully created',
-      success: true,
       newAnimal: formattedUpdatedAnimal,
     });
   } catch (error) {
@@ -71,7 +60,6 @@ const updateAnimal = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Animal was successfully updated',
-      success: true,
       updatedAnimal: formattedUpdatedAnimal,
     });
   } catch (error) {
@@ -90,7 +78,6 @@ const deleteAnimal = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Animal was successfully deleted',
-      success: true,
       deletedAnimal,
     });
   } catch (error) {
