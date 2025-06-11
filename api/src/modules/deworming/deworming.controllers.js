@@ -4,15 +4,10 @@ const dewormingService = require('./deworming.service');
 
 const getAllDeworming = async (req, res, next) => {
   try {
-    const { dewormer, animalId } = req.query;
+    const { query } = req;
     const userId = req.user.sub;
 
-    const filters = {
-      ...(dewormer && { dewormer }),
-      ...(animalId && { animalId }),
-    };
-
-    const deworming = await dewormingService.getAllDeworming(userId, filters);
+    const deworming = await dewormingService.getAllDeworming(userId, query);
 
     res.status(200).json({ deworming, sucess: true });
   } catch (error) {

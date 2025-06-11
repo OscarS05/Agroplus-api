@@ -6,7 +6,7 @@ const email = Joi.string().email();
 const password = Joi.string()
   .min(8)
   .max(128)
-  .pattern('^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};\'":|,.<>\\/?]+$');
+  .pattern(/^[a-zA-Z0-9!@#$%^&*()_+\-=:|,.<>\\/?]+$/);
 
 const userEmailSchema = Joi.object({
   email: email.required(),

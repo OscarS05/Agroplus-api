@@ -13,7 +13,13 @@ const {
 } = require('../../api/src/modules/animal/animal.service');
 const animalRepository = require('../../api/src/modules/animal/animal.repository');
 
-const { animal1, animal2, animal3 } = require('./utils/fake-data');
+const {
+  animal1,
+  animal2,
+  animal3,
+  user2,
+  animal4,
+} = require('./utils/fake-data');
 
 jest.mock('../../api/src/modules/animal/animal.repository', () => ({
   findAllAnimals: jest.fn(),
@@ -144,6 +150,23 @@ describe('Animal service', () => {
       );
       expect(result.length).toBe(3);
       result.forEach((animal) => expect(animal.breed).toEqual('Angus'));
+    });
+
+    test('It should return an animal filtered by user2', async () => {
+      query = {
+        userId: user2().id,
+      };
+      animalRepository.findAllAnimals.mockResolvedValue([animal4()]);
+
+      const result = await getAllAnimals(query);
+
+      expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: query.userId,
+        }),
+      );
+      expect(result.length).toBe(1);
+      expect(result[0].code).toBe(animal4().code);
     });
 
     afterEach(() => {

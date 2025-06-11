@@ -34,6 +34,8 @@ const createApp = () => {
   app.use(ormErrorHandler);
   app.use(boomErrorHandler);
   app.use(errorHandler);
+
+  return app;
 };
 
 module.exports = createApp;
