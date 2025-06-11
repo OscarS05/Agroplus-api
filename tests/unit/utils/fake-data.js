@@ -127,7 +127,7 @@ function deworming3(options = {}) {
 function vaccination1(options = {}) {
   return {
     id: 'f4d5b562-e062-4596-adc0-ee5c79ed9d8d',
-    dewormer: 'Ivermectin 0.5%',
+    vaccine: 'Ivermectin 0.5%',
     description: 'Description 1',
     animalId: 'c36b4f45-35f9-4d77-9669-e55eb7d33405',
     registeredAt: new Date(),
@@ -138,7 +138,7 @@ function vaccination1(options = {}) {
 function vaccination2(options = {}) {
   return {
     id: 'd1ab577c-1ea3-4ec4-9140-5ec1cf154979',
-    dewormer: 'Ivermectin 0.5%',
+    vaccine: 'Ivermectin 0.5%',
     description: 'Description 1',
     animalId: 'a2500a46-5e70-4835-a6e6-f7cf23982d64',
     registeredAt: new Date(),
