@@ -163,7 +163,7 @@ describe('tests for user endpoints', () => {
       expect(body.deworming.animal.code).toBe(animalsUsr1[0].code);
     });
 
-    test('It should return a new deworming without description.', async () => {
+    test('It should return a new deworming with description.', async () => {
       inputBody.description = 'The description is x';
 
       const { statusCode, body } = await api

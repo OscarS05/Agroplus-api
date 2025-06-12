@@ -4,7 +4,12 @@ const routes = express.Router();
 
 const { validateSession } = require('../../middlewares/authentication');
 const { validatorHandler } = require('../../middlewares/validator.handler');
-const { bodyNotesSchema, notesIdSchema } = require('./notes.schemas');
+const {
+  bodyNotesSchema,
+  notesIdSchema,
+  querySchema,
+  bodyToUpdateNotesSchema,
+} = require('./notes.schemas');
 
 const notesControllers = require('./notes.controllers');
 
@@ -45,7 +50,12 @@ const notesControllers = require('./notes.controllers');
  *       401:
  *         description: Unauthorized. Access token expired, invalid or not provided
  */
-routes.get('/', validateSession, notesControllers.getAllNotes);
+routes.get(
+  '/',
+  validateSession,
+  validatorHandler(querySchema, 'query'),
+  notesControllers.getAllNotes,
+);
 
 /**
  * @swagger
@@ -144,7 +154,7 @@ routes.patch(
   '/:noteId',
   validateSession,
   validatorHandler(notesIdSchema, 'params'),
-  validatorHandler(bodyNotesSchema, 'body'),
+  validatorHandler(bodyToUpdateNotesSchema, 'body'),
   notesControllers.updateNote,
 );
 

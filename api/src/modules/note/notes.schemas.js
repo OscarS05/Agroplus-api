@@ -13,7 +13,18 @@ const bodyNotesSchema = Joi.object({
   description: description.optional(),
 });
 
+const bodyToUpdateNotesSchema = Joi.object({
+  title: title.optional(),
+  description: description.optional(),
+});
+
+const querySchema = Joi.object({
+  title: title.optional(),
+});
+
 module.exports = {
   notesIdSchema,
   bodyNotesSchema,
+  querySchema,
+  bodyToUpdateNotesSchema,
 };

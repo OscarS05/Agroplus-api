@@ -9,8 +9,7 @@ const formatNotes = (note) => {
     id: note.id,
     title: note.title,
     description: note.description || null,
-    userId: note.user ? note.user.id : null,
-    user: note.user ? note.user.name : null,
+    user: note.user ? { id: note.user.id, name: note.user.name } : null,
     createdAt: note.createdAt.toISOString().split('T')[0] || note.createdAt,
   };
 };
@@ -28,7 +27,6 @@ const getAllNotes = async (query) => {
   if (!query || typeof query !== 'object') {
     throw Boom.badRequest('query was not provided');
   }
-
   if (!query?.userId) {
     throw Boom.badData('userId was not provided');
   }

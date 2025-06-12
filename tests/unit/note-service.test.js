@@ -62,8 +62,7 @@ describe('Note service', () => {
         expect.objectContaining({
           id: dbResponse[0].id,
           title: dbResponse[0].title,
-          user: user1().name,
-          userId: user1().id,
+          user: { id: dbResponse[0].user.id, name: dbResponse[0].user.name },
         }),
       );
 
