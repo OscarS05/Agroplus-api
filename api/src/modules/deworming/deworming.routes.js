@@ -8,6 +8,7 @@ const { animalIdSchema } = require('../animal/animal.schemas');
 const {
   bodyDewormingSchema,
   dewormingIdSchema,
+  querySchema,
 } = require('./deworming.schemas');
 
 const dewormingControllers = require('./deworming.controllers');
@@ -57,7 +58,12 @@ const dewormingControllers = require('./deworming.controllers');
  *       401:
  *         description: Unauthorized (missing or invalid token)
  */
-routes.get('/deworming', validateSession, dewormingControllers.getAllDeworming);
+routes.get(
+  '/deworming',
+  validateSession,
+  validatorHandler(querySchema, 'query'),
+  dewormingControllers.getAllDeworming,
+);
 
 /**
  * @swagger

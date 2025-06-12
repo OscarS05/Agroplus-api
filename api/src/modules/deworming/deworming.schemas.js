@@ -9,12 +9,17 @@ const dewormingSchema = Joi.object({
   dewormingId: id.required(),
 });
 
+const querySchema = Joi.object({
+  dewormer: dewormer.optional(),
+  animalId: id.optional(),
+});
+
 const dewormingIdSchema = Joi.object({
   dewormingId: id.required(),
 });
 
 const bodyDewormingSchema = Joi.object({
-  dewormer: dewormer.required(),
+  dewormer: dewormer.optional(),
   description: description.optional(),
 });
 
@@ -22,4 +27,5 @@ module.exports = {
   dewormingIdSchema,
   dewormingSchema,
   bodyDewormingSchema,
+  querySchema,
 };

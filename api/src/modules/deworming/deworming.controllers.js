@@ -9,7 +9,7 @@ const getAllDeworming = async (req, res, next) => {
 
     const deworming = await dewormingService.getAllDeworming(userId, query);
 
-    res.status(200).json({ deworming, sucess: true });
+    res.status(200).json({ deworming });
   } catch (error) {
     next(error);
   }
@@ -25,8 +25,11 @@ const createDeworming = async (req, res, next) => {
       ...dewormingData,
       animalId,
     });
-    if (!newDeworming?.id)
+
+    if (!newDeworming?.id) {
       throw Boom.badRequest('Create animal operation returns null');
+    }
+
     const formattedDewormingData = await dewormingService.getDeworming(
       userId,
       newDeworming.id,
@@ -34,8 +37,7 @@ const createDeworming = async (req, res, next) => {
 
     res.status(201).json({
       message: 'Deworming was successfully created',
-      success: true,
-      newDeworming: formattedDewormingData,
+      deworming: formattedDewormingData,
     });
   } catch (error) {
     next(error);
@@ -55,6 +57,7 @@ const updateDeworming = async (req, res, next) => {
     );
     if (!updatedDeworming?.id)
       throw Boom.badRequest('Update animal operation returns null');
+
     const formattedDewormingData = await dewormingService.getDeworming(
       userId,
       updatedDeworming.id,
@@ -62,8 +65,7 @@ const updateDeworming = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Deworming was successfully updated',
-      success: true,
-      updatedDeworming: formattedDewormingData,
+      deworming: formattedDewormingData,
     });
   } catch (error) {
     next(error);
@@ -75,17 +77,14 @@ const deleteDeworming = async (req, res, next) => {
     const { dewormingId } = req.params;
     const userId = req.user.sub;
 
-    const deletedDeworming = await dewormingService.deleteDeworming(
+    const affectedRows = await dewormingService.deleteDeworming(
       userId,
       dewormingId,
     );
-    if (deletedDeworming === 0)
-      throw Boom.badRequest('Delete animal operation returns 0 rows affected');
 
     res.status(200).json({
       message: 'Deworming was successfully deleted',
-      success: true,
-      deletedDeworming,
+      affectedRows,
     });
   } catch (error) {
     next(error);

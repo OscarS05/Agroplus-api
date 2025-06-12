@@ -10,7 +10,9 @@ const formatDeworming = (dewormer) => {
     id: dewormer.id,
     dewormer: dewormer.dewormer,
     description: dewormer.description || null,
-    animal: dewormer.animal ? dewormer.animal.code : null,
+    animal: dewormer.animal
+      ? { code: dewormer.animal.code, id: dewormer.animal.id }
+      : null,
     registeredAt:
       dewormer.registeredAt.toISOString().split('T')[0] ||
       dewormer.registeredAt,
@@ -89,7 +91,10 @@ const updateDeworming = async (userId, dewormingId, dewormingData) => {
   }
 
   const deworming = await dewormingRepository.findOne(userId, dewormingId);
-  if (!deworming?.id) throw Boom.conflict('deworming does not exists');
+  if (!deworming?.id)
+    throw Boom.conflict(
+      'deworming does not exists or does not belong to the user',
+    );
 
   const formattedDewormingData = {
     dewormer: dewormingData.dewormer,

@@ -8,6 +8,7 @@ module.exports = {
     }
 
     return queryInterface.bulkInsert(DEWORMING_TABLE, [
+      // user1
       // animal1
       {
         id: '9d71db0f-468b-4720-84c1-165a56c7e714',
@@ -43,6 +44,8 @@ module.exports = {
         animal_id: 'e9ea0cea-62de-47be-b17a-4f6609e945a4',
         registered_at: '2025-04-23T23:40:07.036Z',
       },
+
+      // user2
     ]);
   },
 
