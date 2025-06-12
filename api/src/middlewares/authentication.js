@@ -20,7 +20,16 @@ const validateSession = async (req, res, next) => {
     const accessToken = req.cookies?.accessToken;
     if (!accessToken) throw Boom.unauthorized('Access token was not provided');
 
-    const decodedAccessToken = jwt.verify(accessToken, config.jwtAccessSecret);
+    let decodedAccessToken = null;
+
+    try {
+      decodedAccessToken = jwt.verify(accessToken, config.jwtAccessSecret);
+    } catch (error) {
+      throw Boom.badRequest(
+        `Error verifying the accessToken: ${error.message}`,
+      );
+    }
+
     if (!decodedAccessToken?.sub)
       throw Boom.unauthorized('Access token has expired');
 

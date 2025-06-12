@@ -70,8 +70,5 @@
  *          success:
  *            type: boolean
  *            example: true
- *          accessToken:
- *            type: string
- *            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *
  */

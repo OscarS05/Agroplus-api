@@ -33,9 +33,10 @@ const createUser = async (req, res, next) => {
     if (!newUser?.id)
       throw Boom.badRequest('Create user operation returns null');
 
-    res
-      .status(201)
-      .json({ message: 'User was successfully created', success: true });
+    res.status(201).json({
+      user: newUser,
+      message: 'User was successfully created',
+    });
   } catch (error) {
     next(error);
   }
@@ -51,9 +52,10 @@ const login = async (req, res, next) => {
 
     cookieHelpers.setCookieAccessToken(res, accessToken);
 
-    res
-      .status(200)
-      .json({ message: 'User authenticated successfully', success: true });
+    res.status(200).json({
+      user,
+      message: 'User authenticated successfully',
+    });
   } catch (error) {
     next(error);
   }
