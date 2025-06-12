@@ -12,6 +12,15 @@ const animalIdSchema = Joi.object({
   animalId: id.required(),
 });
 
+const querySchema = Joi.object({
+  animalId: id.optional(),
+  livestockType: livestockType.optional(),
+  animalType: animalType.optional(),
+  code: code.optional(),
+  breed: breed.optional(),
+  sex: sex.optional(),
+});
+
 const createAnimalsSchema = Joi.object({
   livestockType: livestockType.required(),
   animalType: animalType.required(),
@@ -24,8 +33,8 @@ const createAnimalsSchema = Joi.object({
 });
 
 const updateAnimalsSchema = Joi.object({
-  livestockType: livestockType.required(),
-  animalType: animalType.required(),
+  livestockType: livestockType.optional(),
+  animalType: animalType.optional(),
   breed: breed.optional(),
   code: code.optional(),
   sex: sex.optional(),
@@ -38,4 +47,5 @@ module.exports = {
   animalIdSchema,
   createAnimalsSchema,
   updateAnimalsSchema,
+  querySchema,
 };

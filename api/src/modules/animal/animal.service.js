@@ -1,5 +1,6 @@
 const Boom = require('@hapi/boom');
 const { v4: uuidv4 } = require('uuid');
+const { Op } = require('sequelize');
 
 const animalRepository = require('./animal.repository');
 
@@ -11,6 +12,7 @@ const formatData = (animalData) => {
     breed: animalData?.breed || null,
     code: animalData.code,
     sex: animalData.sex,
+    user: { id: animalData.user.id, name: animalData.user.name },
     mother: animalData.mother ? animalData.mother.code : null,
     father: animalData.father ? animalData.father.code : null,
     birthDate: animalData?.birthDate || null,
@@ -25,10 +27,12 @@ const buildFilters = (query) => {
   return {
     userId,
     ...(animalId && { id: animalId }),
-    ...(code && { code }),
-    ...(livestockType && { livestockType }),
-    ...(animalType && { animalType }),
-    ...(breed && { breed }),
+    ...(code && { code: code.toUpperCase() }),
+    ...(livestockType && {
+      livestockType: { [Op.iLike]: `%${livestockType}%` },
+    }),
+    ...(animalType && { animalType: { [Op.iLike]: `%${animalType}%` } }),
+    ...(breed && { breed: { [Op.iLike]: `%${breed}%` } }),
     ...(sex && { sex }),
   };
 };
@@ -56,6 +60,23 @@ const getAnimal = async (userId, animalId) => {
   return formatData(animal);
 };
 
+const validateParents = async (userId, { fatherId, motherId }) => {
+  const parents = [];
+
+  if (fatherId) parents.push({ id: fatherId, label: 'father' });
+  if (motherId) parents.push({ id: motherId, label: 'mother' });
+
+  await Promise.all(
+    parents.map((parent) =>
+      getAnimal(userId, parent.id).catch(() => {
+        throw Boom.badRequest(
+          `The ${parent.label} to the new animal does not exist`,
+        );
+      }),
+    ),
+  );
+};
+
 const createAnimal = async (animalData) => {
   if (
     !animalData?.livestockType ||
@@ -66,6 +87,13 @@ const createAnimal = async (animalData) => {
     !animalData?.userId
   ) {
     throw Boom.badRequest('Some values were not provided');
+  }
+
+  if (animalData?.fatherId || animalData?.motherId) {
+    await validateParents(animalData.userId, {
+      fatherId: animalData.fatherId,
+      motherId: animalData.motherId,
+    });
   }
 
   const animal = {
@@ -90,10 +118,20 @@ const createAnimal = async (animalData) => {
 
 const updateAnimal = async (userId, animalId, animalData) => {
   const animal = await animalRepository.findOne(userId, animalId);
-  if (!animal?.id) throw Boom.conflict('Animal does not exists');
+  if (!animal?.id)
+    throw Boom.conflict(
+      'Animal does not exists or does not belong to the user',
+    );
 
   if (Object.entries(animalData).length === 0) {
     throw Boom.badRequest('No data was provided to update the animal');
+  }
+
+  if (animalData?.fatherId || animalData?.motherId) {
+    await validateParents(animalData.userId, {
+      fatherId: animalData?.fatherId,
+      motherId: animalData?.motherId,
+    });
   }
 
   const formattedAnimalData = {

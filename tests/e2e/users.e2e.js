@@ -1,8 +1,7 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
 
 const createApp = require('../../api/app');
-const { models } = require('../../api/src/store/db/sequelize');
+// const { models } = require('../../api/src/store/db/sequelize');
 const { upSeed, downSeed } = require('./utils/umzug');
 
 describe('tests for user endpoints', () => {

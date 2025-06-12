@@ -33,7 +33,7 @@ const createAnimal = async (req, res, next) => {
 
     res.status(201).json({
       message: 'Animal was successfully created',
-      newAnimal: formattedUpdatedAnimal,
+      animal: formattedUpdatedAnimal,
     });
   } catch (error) {
     next(error);
@@ -60,7 +60,7 @@ const updateAnimal = async (req, res, next) => {
 
     res.status(200).json({
       message: 'Animal was successfully updated',
-      updatedAnimal: formattedUpdatedAnimal,
+      animal: formattedUpdatedAnimal,
     });
   } catch (error) {
     next(error);
@@ -72,13 +72,13 @@ const deleteAnimal = async (req, res, next) => {
     const { animalId } = req.params;
     const userId = req.user.sub;
 
-    const deletedAnimal = await animalService.deleteAnimal(userId, animalId);
-    if (deletedAnimal === 0)
+    const affectedRows = await animalService.deleteAnimal(userId, animalId);
+    if (affectedRows === 0)
       throw Boom.badRequest('Delete animal operation returns 0 rows affected');
 
     res.status(200).json({
       message: 'Animal was successfully deleted',
-      deletedAnimal,
+      affectedRows,
     });
   } catch (error) {
     next(error);

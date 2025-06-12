@@ -8,6 +8,7 @@ const {
   animalIdSchema,
   createAnimalsSchema,
   updateAnimalsSchema,
+  querySchema,
 } = require('./animal.schemas');
 
 const animalControllers = require('./animal.controllers');
@@ -88,7 +89,12 @@ const animalControllers = require('./animal.controllers');
  *       500:
  *         description: Internal server error
  */
-routes.get('/', validateSession, animalControllers.getAllAnimals);
+routes.get(
+  '/',
+  validateSession,
+  validatorHandler(querySchema, 'query'),
+  animalControllers.getAllAnimals,
+);
 
 /**
  * @swagger
