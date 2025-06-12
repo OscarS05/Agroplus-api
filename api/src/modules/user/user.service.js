@@ -98,7 +98,7 @@ const login = async (userCredentials) => {
 
   await userRepository.update(user.id, { token: accessToken });
 
-  if (user?.get()) {
+  if (user && typeof user.get === 'function') {
     delete user.get({ plain: true }).password;
     delete user.get({ plain: true }).password;
   } else {

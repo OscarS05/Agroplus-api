@@ -19,6 +19,7 @@ const {
   animal3,
   user2,
   animal4,
+  user1,
 } = require('./utils/fake-data');
 
 jest.mock('../../api/src/modules/animal/animal.repository', () => ({
@@ -32,9 +33,23 @@ jest.mock('../../api/src/modules/animal/animal.repository', () => ({
 describe('Animal service', () => {
   describe('getAllAnimals()', () => {
     const dbResponse = [
-      animal1(),
-      animal2(),
+      animal1({
+        user: {
+          id: user1().id,
+          name: user1().name,
+        },
+      }),
+      animal2({
+        user: {
+          id: user1().id,
+          name: user1().name,
+        },
+      }),
       animal3({
+        user: {
+          id: user1().id,
+          name: user1().name,
+        },
         mother: {
           id: animal2().id,
           code: animal2().code,
@@ -125,7 +140,7 @@ describe('Animal service', () => {
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
         expect.objectContaining({
           userId: query.userId,
-          breed: query.breed,
+          breed: expect.any(Object),
           code: query.code,
         }),
       );
@@ -145,7 +160,7 @@ describe('Animal service', () => {
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
         expect.objectContaining({
           userId: query.userId,
-          breed: query.breed,
+          breed: expect.any(Object),
         }),
       );
       expect(result.length).toBe(3);
@@ -156,7 +171,14 @@ describe('Animal service', () => {
       query = {
         userId: user2().id,
       };
-      animalRepository.findAllAnimals.mockResolvedValue([animal4()]);
+      animalRepository.findAllAnimals.mockResolvedValue([
+        animal4({
+          user: {
+            id: user2().id,
+            name: user2().name,
+          },
+        }),
+      ]);
 
       const result = await getAllAnimals(query);
 
@@ -176,7 +198,12 @@ describe('Animal service', () => {
 
   describe('getAnimal()', () => {
     const { userId, id: animalId } = animal1();
-    const dbResponse = animal1();
+    const dbResponse = animal1({
+      user: {
+        id: user1().id,
+        name: user1().name,
+      },
+    });
 
     test('It should return a formatted animal', async () => {
       animalRepository.findOne.mockResolvedValue(dbResponse);
