@@ -15,7 +15,7 @@ describe('tests for user endpoints', () => {
   let user2 = null;
   let animalsUsr1 = null;
   let animalsUsr2 = null;
-  let dewormingsAnimalsUsr1 = null;
+  let vaccinationsAnimalUsr1 = null;
 
   beforeAll(async () => {
     app = createApp();
@@ -64,8 +64,8 @@ describe('tests for user endpoints', () => {
     animalsUsr1 = animalsUser1;
     animalsUsr2 = animalsUser2;
 
-    const [dewormings1, ,] = await Promise.all([
-      models.Deworming.findAll({
+    const [vaccinations1, ,] = await Promise.all([
+      models.Vaccination.findAll({
         include: [
           {
             model: models.Animal,
@@ -75,7 +75,7 @@ describe('tests for user endpoints', () => {
           },
         ],
       }),
-      models.Deworming.findAll({
+      models.Vaccination.findAll({
         include: [
           {
             model: models.Animal,
@@ -87,100 +87,100 @@ describe('tests for user endpoints', () => {
       }),
     ]);
 
-    dewormingsAnimalsUsr1 = dewormings1;
+    vaccinationsAnimalUsr1 = vaccinations1;
   });
 
-  describe('GET /animals/deworming', () => {
-    test('It should return a list of dewormings from user1.', async () => {
+  describe('GET /animals/vaccination', () => {
+    test('It should return a list of vaccinations from user1.', async () => {
       const { statusCode, body } = await api
-        .get('/api/v1/animals/deworming')
+        .get('/api/v1/animals/vaccination')
         .set('Cookie', `accessToken=${accessTokenUser1}`);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming).toHaveLength(4);
-      expect(body.deworming[0].id).toEqual(dewormingsAnimalsUsr1[0].id);
-      expect(body.deworming[0].animal.id).toEqual(
-        dewormingsAnimalsUsr1[0].animalId,
+      expect(body.vaccinations).toHaveLength(4);
+      expect(body.vaccinations[0].id).toEqual(vaccinationsAnimalUsr1[0].id);
+      expect(body.vaccinations[0].animal.id).toEqual(
+        vaccinationsAnimalUsr1[0].animalId,
       );
     });
 
-    test('It should return a list of dewormings from user2.', async () => {
+    test('It should return a list of vaccinations from user2.', async () => {
       const { statusCode, body } = await api
-        .get('/api/v1/animals/deworming')
+        .get('/api/v1/animals/vaccination')
         .set('Cookie', `accessToken=${accessTokenUser2}`);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming).toHaveLength(0);
+      expect(body.vaccinations).toHaveLength(0);
     });
 
     test('It should return an error because the query is not allowed.', async () => {
       const { statusCode, body } = await api
-        .get('/api/v1/animals/deworming?sex=Female')
+        .get('/api/v1/animals/vaccination?sex=Female')
         .set('Cookie', `accessToken=${accessTokenUser1}`);
 
       expect(statusCode).toBe(400);
       expect(body.message).toMatch(/is not allowed/);
     });
 
-    test('It should return an empty array because the dewormer does not exist.', async () => {
+    test('It should return an empty array because the vaccine does not exist.', async () => {
       const { statusCode, body } = await api
-        .get('/api/v1/animals/deworming?dewormer=dewormer-x')
+        .get('/api/v1/animals/vaccination?vaccine=vaccine-x')
         .set('Cookie', `accessToken=${accessTokenUser1}`);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming).toHaveLength(0);
+      expect(body.vaccinations).toHaveLength(0);
     });
 
-    test('It should return an array with 1 deworming because the match is only 1.', async () => {
+    test('It should return an array with 1 vaccination because the match is only 1.', async () => {
       const { statusCode, body } = await api
-        .get('/api/v1/animals/deworming?dewormer=2%')
+        .get('/api/v1/animals/vaccination?vaccine=2%')
         .set('Cookie', `accessToken=${accessTokenUser1}`);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming).toHaveLength(1);
+      expect(body.vaccinations).toHaveLength(1);
     });
   });
 
-  describe('POST /animals/{animalId}/deworming', () => {
+  describe('POST /animals/{animalId}/vaccination', () => {
     let inputBody = null;
 
     beforeEach(() => {
       inputBody = {
-        dewormer: 'ivermectin 5%',
+        vaccine: 'ivermectin 5%',
       };
     });
 
-    test('It should return a new deworming without description.', async () => {
+    test('It should return a new vaccination without description.', async () => {
       const { statusCode, body } = await api
-        .post(`/api/v1/animals/${animalsUsr1[0].id}/deworming`)
+        .post(`/api/v1/animals/${animalsUsr1[0].id}/vaccination`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
       expect(statusCode).toBe(201);
-      expect(body.deworming.dewormer).toBe(inputBody.dewormer);
-      expect(body.deworming.description).toBe(null);
-      expect(body.deworming.animal.id).toBe(animalsUsr1[0].id);
-      expect(body.deworming.animal.code).toBe(animalsUsr1[0].code);
+      expect(body.vaccination.vaccine).toBe(inputBody.vaccine);
+      expect(body.vaccination.description).toBe(null);
+      expect(body.vaccination.animal.id).toBe(animalsUsr1[0].id);
+      expect(body.vaccination.animal.code).toBe(animalsUsr1[0].code);
     });
 
-    test('It should return a new deworming without description.', async () => {
+    test('It should return a new vaccination without description.', async () => {
       inputBody.description = 'The description is x';
 
       const { statusCode, body } = await api
-        .post(`/api/v1/animals/${animalsUsr1[0].id}/deworming`)
+        .post(`/api/v1/animals/${animalsUsr1[0].id}/vaccination`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
       expect(statusCode).toBe(201);
-      expect(body.deworming.dewormer).toBe(inputBody.dewormer);
-      expect(body.deworming.description).toBe(inputBody.description);
-      expect(body.deworming.animal.id).toBe(animalsUsr1[0].id);
-      expect(body.deworming.animal.code).toBe(animalsUsr1[0].code);
+      expect(body.vaccination.vaccine).toBe(inputBody.vaccine);
+      expect(body.vaccination.description).toBe(inputBody.description);
+      expect(body.vaccination.animal.id).toBe(animalsUsr1[0].id);
+      expect(body.vaccination.animal.code).toBe(animalsUsr1[0].code);
     });
 
-    test('It should return an error because the deworming does not belong to the user', async () => {
+    test('It should return an error because the vaccination does not belong to the user', async () => {
       const { statusCode, body } = await api
-        .post(`/api/v1/animals/${animalsUsr2[0].id}/deworming`)
+        .post(`/api/v1/animals/${animalsUsr2[0].id}/vaccination`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
@@ -192,7 +192,7 @@ describe('tests for user endpoints', () => {
       inputBody.register = new Date();
 
       const { statusCode, body } = await api
-        .post(`/api/v1/animals/${animalsUsr2[0].id}/deworming`)
+        .post(`/api/v1/animals/${animalsUsr2[0].id}/vaccination`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
@@ -201,10 +201,10 @@ describe('tests for user endpoints', () => {
     });
 
     test('It should return an error because the data is invalid.', async () => {
-      delete inputBody.dewormer;
+      delete inputBody.vaccine;
 
       const { statusCode, body } = await api
-        .post(`/api/v1/animals/${animalsUsr2[0].id}/deworming`)
+        .post(`/api/v1/animals/${animalsUsr2[0].id}/vaccination`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
@@ -213,54 +213,54 @@ describe('tests for user endpoints', () => {
     });
   });
 
-  describe('PATCH /animals/deworming/{dewormingId}', () => {
+  describe('PATCH /animals/vaccination/{vaccinationId}', () => {
     let inputBody = null;
 
     beforeEach(() => {
       inputBody = {
-        dewormer: 'dewormer-y',
+        vaccine: 'vaccine-y',
       };
     });
 
-    test('It should return an updated deworming updating only the dewormer.', async () => {
+    test('It should return an updated vaccination updating only the vaccine.', async () => {
       const { statusCode, body } = await api
-        .patch(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[0].id}`)
+        .patch(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[0].id}`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming.id).toBe(dewormingsAnimalsUsr1[0].id);
-      expect(body.deworming.dewormer).not.toBe(
-        dewormingsAnimalsUsr1[0].dewormer,
+      expect(body.vaccination.id).toBe(vaccinationsAnimalUsr1[0].id);
+      expect(body.vaccination.vaccine).not.toBe(
+        vaccinationsAnimalUsr1[0].vaccine,
       );
-      expect(body.deworming.dewormer).toBe(inputBody.dewormer);
-      expect(body.deworming.description).toBe(
-        dewormingsAnimalsUsr1[0].description,
+      expect(body.vaccination.vaccine).toBe(inputBody.vaccine);
+      expect(body.vaccination.description).toBe(
+        vaccinationsAnimalUsr1[0].description,
       );
     });
 
-    test('It should return an updated deworming updating only the description.', async () => {
-      delete inputBody.dewormer;
+    test('It should return an updated vaccination updating only the description.', async () => {
+      delete inputBody.vaccine;
       inputBody.description = 'updated description';
 
       const { statusCode, body } = await api
-        .patch(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[1].id}`)
+        .patch(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[1].id}`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
       expect(statusCode).toBe(200);
-      expect(body.deworming.id).toBe(dewormingsAnimalsUsr1[1].id);
-      expect(body.deworming.dewormer).toBe(dewormingsAnimalsUsr1[1].dewormer);
-      expect(body.deworming.description).not.toBe(
-        dewormingsAnimalsUsr1[1].description,
+      expect(body.vaccination.id).toBe(vaccinationsAnimalUsr1[1].id);
+      expect(body.vaccination.vaccine).toBe(vaccinationsAnimalUsr1[1].vaccine);
+      expect(body.vaccination.description).not.toBe(
+        vaccinationsAnimalUsr1[1].description,
       );
     });
 
     test('It should return an error because the data to update was not provided.', async () => {
-      delete inputBody.dewormer;
+      delete inputBody.vaccine;
 
       const { statusCode, body } = await api
-        .patch(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[1].id}`)
+        .patch(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[1].id}`)
         .set('Cookie', `accessToken=${accessTokenUser1}`)
         .send(inputBody);
 
@@ -268,33 +268,32 @@ describe('tests for user endpoints', () => {
       expect(body.message).toMatch(/was not provided/);
     });
 
-    test('It should return an error because the deworming does not belong to the user2 or does not exist.', async () => {
+    test('It should return an error because the vaccination does not belong to the user2 or does not exist.', async () => {
       const { statusCode, body } = await api
-        .patch(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[1].id}`)
+        .patch(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[1].id}`)
         .set('Cookie', `accessToken=${accessTokenUser2}`)
         .send(inputBody);
 
-      expect(statusCode).toBe(409);
+      expect(statusCode).toBe(404);
       expect(body.message).toMatch(/does not exist|does not belong/);
     });
   });
 
-  describe('DELETE /animals/deworming/{dewormingId}', () => {
+  describe('DELETE /animals/vaccination/{vaccinationId}', () => {
     test('It should return a 200 statusCode and 1 affectedRows.', async () => {
       const { statusCode, body } = await api
-        .delete(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[1].id}`)
+        .delete(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[1].id}`)
         .set('Cookie', `accessToken=${accessTokenUser1}`);
-
       expect(statusCode).toBe(200);
       expect(body.affectedRows).toBe(1);
     });
 
     test('It should return an error because the animalId does not exist or does not belong to the user2.', async () => {
       const { statusCode, body } = await api
-        .delete(`/api/v1/animals/deworming/${dewormingsAnimalsUsr1[0].id}`)
+        .delete(`/api/v1/animals/vaccination/${vaccinationsAnimalUsr1[0].id}`)
         .set('Cookie', `accessToken=${accessTokenUser2}`);
 
-      expect(statusCode).toBe(409);
+      expect(statusCode).toBe(404);
       expect(body.message).toMatch(/does not exist/);
     });
   });

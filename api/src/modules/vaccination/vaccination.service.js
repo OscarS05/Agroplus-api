@@ -10,7 +10,9 @@ const formatVaccination = (vaccination) => {
     id: vaccination.id,
     vaccine: vaccination.vaccine,
     description: vaccination.description || null,
-    animal: vaccination.animal ? vaccination.animal.code : null,
+    animal: vaccination.animal
+      ? { id: vaccination.animal.id, code: vaccination.animal.code }
+      : null,
     registeredAt:
       vaccination.registeredAt.toISOString().split('T')[0] ||
       vaccination.registeredAt,

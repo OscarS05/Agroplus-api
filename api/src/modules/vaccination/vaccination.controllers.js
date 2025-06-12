@@ -12,7 +12,7 @@ const getAllVaccination = async (req, res, next) => {
       query,
     );
 
-    res.status(200).json({ vaccinations, sucess: true });
+    res.status(200).json({ vaccinations });
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,7 @@ const createVaccination = async (req, res, next) => {
     res.status(201).json({
       message: 'Vaccination was successfully created',
       success: true,
-      newVaccination: formattedVaccinationData,
+      vaccination: formattedVaccinationData,
     });
   } catch (error) {
     next(error);
@@ -56,8 +56,7 @@ const updateVaccination = async (req, res, next) => {
       vaccinationId,
       vaccinationData,
     );
-    if (!updatedVaccination?.id)
-      throw Boom.badRequest('Update animal operation returns null');
+
     const formattedVaccinationData = await vaccinationService.getVaccination(
       userId,
       updatedVaccination.id,
@@ -66,7 +65,7 @@ const updateVaccination = async (req, res, next) => {
     res.status(200).json({
       message: 'Vaccination was successfully updated',
       success: true,
-      updatedVaccination: formattedVaccinationData,
+      vaccination: formattedVaccinationData,
     });
   } catch (error) {
     next(error);
@@ -78,17 +77,15 @@ const deleteVaccination = async (req, res, next) => {
     const { vaccinationId } = req.params;
     const userId = req.user.sub;
 
-    const deletedVaccination = await vaccinationService.deleteVaccination(
+    const affectedRows = await vaccinationService.deleteVaccination(
       userId,
       vaccinationId,
     );
-    if (deletedVaccination === 0)
-      throw Boom.badRequest('Delete animal operation returns 0 rows affected');
 
     res.status(200).json({
       message: 'Vaccination was successfully deleted',
       success: true,
-      deletedVaccination,
+      affectedRows,
     });
   } catch (error) {
     next(error);

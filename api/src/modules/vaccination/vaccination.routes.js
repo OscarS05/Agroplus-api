@@ -8,6 +8,8 @@ const { animalIdSchema } = require('../animal/animal.schemas');
 const {
   bodyVaccinationSchema,
   vaccinationIdSchema,
+  querySchema,
+  bodyToUpdateVaccinationSchema,
 } = require('./vaccination.schemas');
 
 const vaccinationControllers = require('./vaccination.controllers');
@@ -60,6 +62,7 @@ const vaccinationControllers = require('./vaccination.controllers');
 routes.get(
   '/vaccination',
   validateSession,
+  validatorHandler(querySchema, 'query'),
   vaccinationControllers.getAllVaccination,
 );
 
@@ -169,7 +172,7 @@ routes.patch(
   '/vaccination/:vaccinationId',
   validateSession,
   validatorHandler(vaccinationIdSchema, 'params'),
-  validatorHandler(bodyVaccinationSchema, 'body'),
+  validatorHandler(bodyToUpdateVaccinationSchema, 'body'),
   vaccinationControllers.updateVaccination,
 );
 

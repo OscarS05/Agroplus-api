@@ -8,6 +8,7 @@ module.exports = {
     }
 
     return queryInterface.bulkInsert(VACCINATION_TABLE, [
+      // User 1
       // animal1
       {
         id: 'daa915c2-192d-43b5-930d-88596673c6e0',
@@ -43,6 +44,8 @@ module.exports = {
         animal_id: 'e9ea0cea-62de-47be-b17a-4f6609e945a4',
         registered_at: '2025-04-23T23:40:07.036Z',
       },
+
+      // User 2
     ]);
   },
 
