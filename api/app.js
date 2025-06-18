@@ -12,8 +12,9 @@ const {
   errorHandler,
 } = require('./src/middlewares/error.handler');
 const { routerApi } = require('./src/modules/routes');
+const useGraphQl = require('./src/graphql/index');
 
-const createApp = () => {
+const createApp = async () => {
   const app = express();
 
   app.use(express.json());
@@ -29,6 +30,7 @@ const createApp = () => {
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
   routerApi(app);
+  await useGraphQl(app);
 
   app.use(logErrors);
   app.use(ormErrorHandler);
