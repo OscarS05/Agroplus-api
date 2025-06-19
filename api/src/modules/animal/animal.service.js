@@ -21,10 +21,19 @@ const formatData = (animalData) => {
 };
 
 const buildFilters = (query) => {
-  const { code, livestockType, animalType, breed, sex, animalId, userId } =
-    query;
+  const {
+    code,
+    livestockType,
+    animalType,
+    breed,
+    sex,
+    animalId,
+    userId,
+    limit = 10,
+    offset = 0,
+  } = query;
 
-  return {
+  const where = {
     userId,
     ...(animalId && { id: animalId }),
     ...(code && { code: code.toUpperCase() }),
@@ -33,7 +42,13 @@ const buildFilters = (query) => {
     }),
     ...(animalType && { animalType: { [Op.iLike]: `%${animalType}%` } }),
     ...(breed && { breed: { [Op.iLike]: `%${breed}%` } }),
-    ...(sex && { sex }),
+    ...(sex && { sex: { [Op.like]: `%${sex}%` } }),
+  };
+
+  return {
+    where,
+    limit: limit ?? parseInt(limit, 10),
+    offset: offset ?? parseInt(offset, 10),
   };
 };
 
@@ -96,7 +111,7 @@ const createAnimal = async (animalData) => {
     });
   }
 
-  const animal = {
+  const animalDataFormatted = {
     id: uuidv4(),
     livestockType: animalData.livestockType,
     animalType: animalData.animalType,
@@ -110,10 +125,11 @@ const createAnimal = async (animalData) => {
     registeredAt: new Date().toISOString().split('T')[0],
   };
 
-  const newAnimal = await animalRepository.create(animal);
+  const newAnimal = await animalRepository.create(animalDataFormatted);
   if (!newAnimal?.id)
     throw Boom.badRequest('Something went wrong creating the animal');
-  return newAnimal;
+
+  return getAnimal(newAnimal.userId, newAnimal.id);
 };
 
 const updateAnimal = async (userId, animalId, animalData) => {
@@ -157,7 +173,7 @@ const updateAnimal = async (userId, animalId, animalData) => {
   if (updatedRows === 0) {
     throw Boom.badRequest('Something went wrong creating the animal');
   }
-  return updatedAnimal;
+  return getAnimal(updatedAnimal.userId, updatedAnimal.id);
 };
 
 const deleteAnimal = async (userId, animalId) => {

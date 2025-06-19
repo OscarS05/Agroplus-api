@@ -1,7 +1,9 @@
 const sequelize = require('../../store/db/sequelize');
 
-const findAllUsers = async () => {
+const findAllUsers = async ({ limit, offset }) => {
   return sequelize.models.User.findAll({
+    limit,
+    offset,
     attributes: { exclude: ['password', 'token'] },
   });
 };

@@ -15,7 +15,7 @@ describe('tests for user endpoints', () => {
   let user2 = null;
 
   beforeAll(async () => {
-    app = createApp();
+    app = await createApp();
     server = app.listen(9000);
     api = request(app);
 
@@ -186,6 +186,6 @@ describe('tests for user endpoints', () => {
 
   afterAll(async () => {
     await downSeed();
-    server.close();
+    await server.close();
   });
 });

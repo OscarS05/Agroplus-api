@@ -107,7 +107,11 @@ describe('Animal service', () => {
 
       expect(animalRepository.findAllAnimals).toHaveBeenCalledTimes(1);
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith({
-        userId: query.userId,
+        limit: 10,
+        offset: 0,
+        where: {
+          userId: query.userId,
+        },
       });
     });
 
@@ -139,9 +143,13 @@ describe('Animal service', () => {
 
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
         expect.objectContaining({
-          userId: query.userId,
-          breed: expect.any(Object),
-          code: query.code,
+          where: {
+            userId: query.userId,
+            breed: expect.any(Object),
+            code: query.code,
+          },
+          limit: 10,
+          offset: 0,
         }),
       );
       expect(result.length).toBe(1);
@@ -159,8 +167,12 @@ describe('Animal service', () => {
 
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
         expect.objectContaining({
-          userId: query.userId,
-          breed: expect.any(Object),
+          where: {
+            userId: query.userId,
+            breed: expect.any(Object),
+          },
+          limit: 10,
+          offset: 0,
         }),
       );
       expect(result.length).toBe(3);
@@ -184,7 +196,11 @@ describe('Animal service', () => {
 
       expect(animalRepository.findAllAnimals).toHaveBeenCalledWith(
         expect.objectContaining({
-          userId: query.userId,
+          where: {
+            userId: query.userId,
+          },
+          limit: 10,
+          offset: 0,
         }),
       );
       expect(result.length).toBe(1);
@@ -197,7 +213,8 @@ describe('Animal service', () => {
   });
 
   describe('getAnimal()', () => {
-    const { userId, id: animalId } = animal1();
+    const { user, id: animalId } = animal1();
+    const userId = user.id;
     const dbResponse = animal1({
       user: {
         id: user1().id,
@@ -266,6 +283,10 @@ describe('Animal service', () => {
 
     test('It should return a new animal', async () => {
       animalRepository.create.mockResolvedValue({ ...dbReponse, id: fakeUuid });
+      animalRepository.findOne.mockResolvedValue({
+        ...dbReponse,
+        id: fakeUuid,
+      });
 
       const result = await createAnimal(animalData);
 
@@ -307,8 +328,12 @@ describe('Animal service', () => {
     });
 
     test('It should return an updated animal', async () => {
-      animalRepository.findOne.mockResolvedValue(animal1());
+      animalRepository.findOne.mockResolvedValueOnce(animal1()); // Validate if animal exists
       animalRepository.update.mockResolvedValue([1, [dbReponse]]);
+      animalRepository.findOne.mockResolvedValueOnce({
+        ...animal1(),
+        ...animalData,
+      }); // Validate if animal was updated
 
       const result = await updateAnimal(userId, animalId, animalData);
 

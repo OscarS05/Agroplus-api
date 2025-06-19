@@ -18,7 +18,7 @@ describe('tests for user endpoints', () => {
   let dewormingsAnimalsUsr1 = null;
 
   beforeAll(async () => {
-    app = createApp();
+    app = await createApp();
     server = app.listen(9000);
     api = request(app);
 

@@ -17,7 +17,7 @@ describe('tests for user endpoints', () => {
   let notesUsr2 = null;
 
   beforeAll(async () => {
-    app = createApp();
+    app = await createApp();
     server = app.listen(9000);
     api = request(app);
 

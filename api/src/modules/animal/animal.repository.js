@@ -1,8 +1,10 @@
 const sequelize = require('../../store/db/sequelize');
 
-const findAllAnimals = async (filters) => {
+const findAllAnimals = async ({ where, limit, offset }) => {
   return sequelize.models.Animal.findAll({
-    where: filters,
+    where,
+    limit,
+    offset,
     include: [
       {
         model: sequelize.models.Animal,

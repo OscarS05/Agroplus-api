@@ -8,10 +8,10 @@ const {
   validateGraphQLSession,
 } = require('../../../middlewares/authentication');
 
-const getAll = async (_, __, context) => {
+const getAll = async (_, { query }, context) => {
   await validateGraphQLSession(context.req);
 
-  return getAllUsers();
+  return getAllUsers(query);
 };
 
 const getByEmail = async (_, { email }, context) => {

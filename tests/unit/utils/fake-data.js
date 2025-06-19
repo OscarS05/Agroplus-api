@@ -29,6 +29,10 @@ function animal1(options = {}) {
     code: 'ABC-123',
     sex: 'Male',
     userId: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+    user: {
+      id: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+      name: 'user1',
+    },
     motherId: null,
     fatherId: null,
     birthDate: null,
@@ -46,6 +50,10 @@ function animal2(options = {}) {
     code: 'DFE-123',
     sex: 'Female',
     userId: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+    user: {
+      id: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+      name: 'user1',
+    },
     motherId: null,
     fatherId: null,
     birthDate: null,
@@ -63,6 +71,10 @@ function animal3(options = {}) {
     code: 'HIJ-123',
     sex: 'Female',
     userId: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+    user: {
+      id: '44c5da38-bb82-4659-b84a-f6be63e300fc',
+      name: 'user1',
+    },
     motherId: 'e9ea0cea-62de-47be-b17a-4f6609e945a4',
     fatherId: 'd0759f76-a119-4be0-ad33-e93595f56be8',
     birthDate: new Date(),
@@ -80,6 +92,10 @@ function animal4(options = {}) {
     code: 'KLM-123',
     sex: 'Female',
     userId: '6cc1432a-6407-4454-b252-4432bb7270ea',
+    user: {
+      id: '6cc1432a-6407-4454-b252-4432bb7270ea',
+      name: 'user2',
+    },
     motherId: 'e9ea0cea-62de-47be-b17a-4f6609e945a4',
     fatherId: 'd0759f76-a119-4be0-ad33-e93595f56be8',
     birthDate: new Date(),

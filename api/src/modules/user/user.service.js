@@ -18,8 +18,25 @@ const generateToken = (user) => {
   return accessToken;
 };
 
-const getAllUsers = async () => {
-  return userRepository.findAllUsers();
+const buildFilters = (query) => {
+  const { limit = 15, offset = 0 } = query;
+
+  return {
+    limit: limit ?? parseInt(limit, 10),
+    offset: offset ?? parseInt(offset, 10),
+  };
+};
+
+const getAllUsers = async (query) => {
+  if (!query || typeof query !== 'object') {
+    throw Boom.badRequest(
+      'query were not provided or does not have the correct type',
+    );
+  }
+
+  const filters = buildFilters(query);
+
+  return userRepository.findAllUsers(filters);
 };
 
 const getUser = async (userId) => {

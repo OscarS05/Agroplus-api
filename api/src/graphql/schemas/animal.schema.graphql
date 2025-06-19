@@ -1,0 +1,57 @@
+type Query {
+  animals(filters: AnimalFilter): [Animal!]!
+  animal(id: UUID!): Animal!
+}
+
+type Mutation {
+  createAnimal(input: CreateAnimal!): Animal!
+  updateAnimal(id: UUID!, changes: UpdateAnimal): Animal!
+  deleteAnimal(id: UUID!): Int!
+}
+
+type Animal {
+  id: UUID!
+  livestockType: String!
+  animalType: String!
+  breed: String
+  code: String!
+  sex: String
+  user: UserSummaryResponse!
+  mother: String
+  father: String
+  birthDate: Date
+  registeredAt: Date!
+}
+
+input AnimalFilter {
+  animalId: ID
+  code: String
+  livestockType: String
+  animalType: String
+  breed: String
+  sex: String
+  limit: Int
+  offset: Int
+}
+
+input CreateAnimal {
+  code: String!
+  livestockType: String!
+  animalType: String!
+  breed: String!
+  sex: String!
+  motherId: UUID
+  fatherId: UUID
+  birthDate: Date
+}
+
+input UpdateAnimal {
+  code: String
+  livestockType: String
+  animalType: String
+  breed: String
+  sex: String
+  motherId: UUID
+  fatherId: UUID
+  birthDate: Date
+}

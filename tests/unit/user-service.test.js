@@ -42,7 +42,7 @@ describe('User service', () => {
     test('It should return all users', async () => {
       userRepository.findAllUsers.mockResolvedValue(dbReponse);
 
-      const result = await getAllUsers();
+      const result = await getAllUsers({});
       expect(Array.isArray(result)).toBeTruthy();
       expect(result.length).toBe(2);
       expect(userRepository.findAllUsers).toHaveBeenCalledTimes(1);
@@ -51,7 +51,7 @@ describe('User service', () => {
     test('It should return an empty array', async () => {
       userRepository.findAllUsers.mockResolvedValue([]);
 
-      const result = await getAllUsers();
+      const result = await getAllUsers({});
       expect(Array.isArray(result)).toBeTruthy();
       expect(result.length).toBe(0);
       expect(userRepository.findAllUsers).toHaveBeenCalledTimes(1);
@@ -62,7 +62,7 @@ describe('User service', () => {
         new Error('Something went wrong'),
       );
 
-      await expect(getAllUsers()).rejects.toThrow('Something went wrong');
+      await expect(getAllUsers({})).rejects.toThrow('Something went wrong');
       expect(userRepository.findAllUsers).toHaveBeenCalledTimes(1);
     });
 

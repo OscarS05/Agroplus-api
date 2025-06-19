@@ -1,13 +1,11 @@
 type Query {
   hello: String!
 
-  # User queries
-  users: [User!]!
+  users(query: UsersFilter): [User!]!
   user(email: EmailAddress!): User!
 }
 
 type Mutation {
-  # User mutations
   signUp(name: NameType!, email: EmailAddress!, password: PasswordType!): User!
   login(email: EmailAddress!, password: String!): LoginResponse!
 }
@@ -20,9 +18,19 @@ type User {
   createdAt: Date!
 }
 
+input UsersFilter {
+  limit: Int
+  offset: Int
+}
+
 type LoginResponse {
   user: User!
   accessToken: String!
+}
+
+type UserSummaryResponse {
+  id: UUID!
+  name: String!
 }
 
 scalar NameType
