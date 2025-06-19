@@ -20,11 +20,17 @@ const formatDeworming = (dewormer) => {
 };
 
 const buildFilters = (query) => {
-  const { dewormer, animalId } = query;
+  const { dewormer, animalId, limit = 10, offset = 0 } = query;
 
-  return {
+  const where = {
     ...(dewormer && { dewormer: { [Op.iLike]: `%${dewormer}%` } }),
     ...(animalId && { animalId }),
+  };
+
+  return {
+    where,
+    limit: limit ?? parseInt(limit, 10),
+    offset: offset ?? parseInt(offset, 10),
   };
 };
 
@@ -80,7 +86,7 @@ const createDeworming = async (userId, dewormingData) => {
     throw Boom.badRequest('Something went wrong creating the deworming');
   }
 
-  return newdeworming;
+  return getDeworming(userId, newdeworming.id);
 };
 
 const updateDeworming = async (userId, dewormingId, dewormingData) => {
@@ -110,7 +116,7 @@ const updateDeworming = async (userId, dewormingId, dewormingData) => {
   if (updatedRows === 0) {
     throw Boom.badRequest('Something went wrong creating the deworming');
   }
-  return updatedDeworming;
+  return getDeworming(userId, updatedDeworming.id);
 };
 
 const deleteDeworming = async (userId, dewormingId) => {

@@ -10,6 +10,10 @@ const {
   query: animalQueries,
   mutation: animalMutation,
 } = require('./resolvers/animal/index');
+const {
+  query: dewormingQueries,
+  mutation: dewormingMutation,
+} = require('./resolvers/deworming/index');
 
 const resolvers = {
   Query: {
@@ -17,10 +21,12 @@ const resolvers = {
 
     ...userQueries,
     ...animalQueries,
+    ...dewormingQueries,
   },
   Mutation: {
     ...userMutations,
     ...animalMutation,
+    ...dewormingMutation,
   },
 
   NameType,

@@ -1,8 +1,10 @@
 const sequelize = require('../../store/db/sequelize');
 
-const findAllDewormings = async (userId, filters) => {
+const findAllDewormings = async (userId, { where, limit, offset }) => {
   return sequelize.models.Deworming.findAll({
-    where: filters,
+    where,
+    limit,
+    offset,
     include: [
       {
         model: sequelize.models.Animal,

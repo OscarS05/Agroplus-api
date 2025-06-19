@@ -23,6 +23,11 @@ type Animal {
   registeredAt: Date!
 }
 
+type AnimalSummaryResponse {
+  id: UUID!
+  code: String!
+}
+
 input AnimalFilter {
   animalId: ID
   code: String

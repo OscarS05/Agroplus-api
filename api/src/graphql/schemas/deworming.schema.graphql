@@ -1,0 +1,36 @@
+type Query {
+  dewormings(query: queryDeworming): [Deworming!]!
+  deworming(id: UUID!): Deworming!
+}
+
+type Mutation {
+  createDeworming(input: CreateDeworming!): Deworming!
+  updateDeworming(id: UUID!, changes: UpdateDeworming!): Deworming!
+  deleteDeworming(id: UUID!): Int!
+}
+
+type Deworming {
+  id: UUID!
+  dewormer: String!
+  description: String
+  animal: AnimalSummaryResponse!
+  registeredAt: Date!
+}
+
+input queryDeworming {
+  animalId: UUID
+  dewormer: String
+  limit: Int
+  offset: Int
+}
+
+input CreateDeworming {
+  dewormer: String!
+  description: String
+  animalId: UUID!
+}
+
+input UpdateDeworming {
+  dewormer: String
+  description: String
+}

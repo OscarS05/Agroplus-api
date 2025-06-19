@@ -98,7 +98,7 @@ describe('Deworming service', () => {
       expect(dewormingRepository.findAllDewormings).toHaveBeenCalledTimes(1);
       expect(dewormingRepository.findAllDewormings).toHaveBeenCalledWith(
         userId,
-        { animalId: query.animalId },
+        { where: { animalId: query.animalId }, limit: 10, offset: 0 },
       );
     });
 
@@ -193,6 +193,10 @@ describe('Deworming service', () => {
         id: fakeUuid,
       });
       animalRepository.findOne.mockResolvedValue(animal1());
+      dewormingRepository.findOne.mockResolvedValueOnce({
+        ...dbReponse,
+        id: fakeUuid,
+      });
 
       const result = await createDeworming(userId, dewormingData);
 
@@ -272,8 +276,9 @@ describe('Deworming service', () => {
     });
 
     test('It should return an updated deworming', async () => {
-      dewormingRepository.findOne.mockResolvedValue(deworming1());
+      dewormingRepository.findOne.mockResolvedValueOnce(deworming1());
       dewormingRepository.update.mockResolvedValue([1, [dbReponse]]);
+      dewormingRepository.findOne.mockResolvedValueOnce(dbReponse);
 
       const result = await updateDeworming(userId, dewormingId, dewormingData);
 

@@ -1,5 +1,3 @@
-const Boom = require('@hapi/boom');
-
 const dewormingService = require('./deworming.service');
 
 const getAllDeworming = async (req, res, next) => {
@@ -26,18 +24,9 @@ const createDeworming = async (req, res, next) => {
       animalId,
     });
 
-    if (!newDeworming?.id) {
-      throw Boom.badRequest('Create animal operation returns null');
-    }
-
-    const formattedDewormingData = await dewormingService.getDeworming(
-      userId,
-      newDeworming.id,
-    );
-
     res.status(201).json({
       message: 'Deworming was successfully created',
-      deworming: formattedDewormingData,
+      deworming: newDeworming,
     });
   } catch (error) {
     next(error);
@@ -55,17 +44,10 @@ const updateDeworming = async (req, res, next) => {
       dewormingId,
       dewormingData,
     );
-    if (!updatedDeworming?.id)
-      throw Boom.badRequest('Update animal operation returns null');
-
-    const formattedDewormingData = await dewormingService.getDeworming(
-      userId,
-      updatedDeworming.id,
-    );
 
     res.status(200).json({
       message: 'Deworming was successfully updated',
-      deworming: formattedDewormingData,
+      deworming: updatedDeworming,
     });
   } catch (error) {
     next(error);
