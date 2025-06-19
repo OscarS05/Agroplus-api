@@ -15,29 +15,45 @@ const limiter = (limit, windowMs, message) =>
     legacyHeaders: false,
   });
 
-const validateSession = async (req, res, next) => {
+const handlerValidateSession = async (req) => {
+  let decodedAccessToken = null;
+  let accessToken = null;
+
   try {
-    const accessToken = req.cookies?.accessToken;
-    if (!accessToken) throw Boom.unauthorized('Access token was not provided');
-
-    let decodedAccessToken = null;
-
-    try {
-      decodedAccessToken = jwt.verify(accessToken, config.jwtAccessSecret);
-    } catch (error) {
-      throw Boom.badRequest(
-        `Error verifying the accessToken: ${error.message}`,
-      );
+    if (req.cookies.accessToken) {
+      accessToken = req.cookies.accessToken;
+    } else if (req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      if (authHeader.startsWith('Bearer ')) {
+        [, accessToken] = authHeader.split(' ');
+      } else {
+        throw Boom.unauthorized('Invalid authorization header format');
+      }
     }
 
-    if (!decodedAccessToken?.sub)
-      throw Boom.unauthorized('Access token has expired');
+    decodedAccessToken = jwt.verify(accessToken, config.jwtAccessSecret);
+  } catch (error) {
+    throw Boom.badRequest(`Error verifying the accessToken: ${error.message}`);
+  }
 
-    const user = await userRepository.findOneToValidateSession(
-      decodedAccessToken.sub,
-      accessToken,
-    );
-    if (!user?.id) throw Boom.unauthorized('Invalid access token');
+  if (!decodedAccessToken?.sub) {
+    throw Boom.unauthorized('Access token has expired');
+  }
+
+  const user = await userRepository.findOneToValidateSession(
+    decodedAccessToken.sub,
+    accessToken,
+  );
+
+  if (!user?.id) throw Boom.unauthorized('Invalid access token');
+
+  return { user, decodedAccessToken, accessToken };
+};
+
+const validateSession = async (req, res, next) => {
+  try {
+    const { decodedAccessToken, accessToken } =
+      await handlerValidateSession(req);
 
     req.user = decodedAccessToken;
     req.tokens = { accessToken };
@@ -47,4 +63,13 @@ const validateSession = async (req, res, next) => {
   }
 };
 
-module.exports = { validateSession, limiter };
+const validateGraphQLSession = async (req) => {
+  try {
+    const { user } = await handlerValidateSession(req);
+    return user;
+  } catch (error) {
+    throw Boom.unauthorized('GraphQL session validation failed');
+  }
+};
+
+module.exports = { validateSession, limiter, validateGraphQLSession };

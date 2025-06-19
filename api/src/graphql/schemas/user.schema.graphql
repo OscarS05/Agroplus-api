@@ -1,0 +1,29 @@
+type Query {
+  hello: String!
+
+  # User queries
+  users: [User!]!
+  user(email: EmailAddress!): User!
+}
+
+type Mutation {
+  # User mutations
+  signUp(name: NameType!, email: EmailAddress!, password: PasswordType!): User!
+  login(email: EmailAddress!, password: String!): LoginResponse!
+}
+
+type User {
+  id: UUID!
+  name: String!
+  email: EmailAddress!
+  role: String!
+  createdAt: Date!
+}
+
+type LoginResponse {
+  user: User!
+  accessToken: String!
+}
+
+scalar NameType
+scalar PasswordType
