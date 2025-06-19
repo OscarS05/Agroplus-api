@@ -1,25 +1,26 @@
 # 🐄 Agroplus-API
 
-**Agroplus-API** is a RESTful API built to help cattle ranchers manage all relevant information about their livestock. It enables users to register, track, and manage data on animals, including parentage, vaccination, deworming records, and personal notes.
+**Agroplus-API** is a GraphQL-enabled RESTful API designed to help farmers manage all relevant information about their livestock. It allows users to record, track, and manage animal data, including parentage, vaccination, deworming records, and personal notes.
 
 ---
 
-<p align="left"> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" width="40" height="40"/> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sequelize/sequelize-original.svg" alt="Sequelize" width="40" height="40"/> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="40" height="40"/> 
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg" alt="Jest" width="40" height="40" />
+<p align="center"> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" width="50" height="50"/> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/graphql/graphql-plain.svg" alt="GraphQL" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="50" height="50"/> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sequelize/sequelize-original.svg" alt="Sequelize" width="50" height="50"/> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="50" height="50"/> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="50" height="50"/> 
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="50" height="50"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg" alt="Jest" width="50" height="50" />
 </p>
 
 ---
 
 ## 🧑‍💻 Tech Stack
 
-- **Backend**: Node.js + Express.js
+- **Backend**: Node.js + Express.js with GraphQL
 - **ORM**: Sequelize
 - **Database**: PostgreSQL
 - **Container**: Docker
@@ -40,10 +41,11 @@
 - 💉 **CRUD for vaccinations.**
 - 💊 **CRUD for deworming treatments.**
 - 📝 **CRUD for notes.**
+- Full support for **GraphQL**
 
 ## 🙈 **Planned**
 
-- 🔜 : Compatible with **GraphQL**.
+- 🔜 : Live chat with other users using **Socket.io**
 
 ---
 
@@ -59,9 +61,11 @@
 
 - **Roles**: No role-based access control; every user has full access to their data.
 
+- **Important**: In GraphQL, the accessToken is implemented in the headers using "Bearer" strategy
+
 ## Testing
 
-The project has been tested in a robust way using **Jest + Supertest**. The implemented tests were **unit tests and E2E tests**.
+The project has been tested in a robust way using **Jest + Supertest**. The implemented tests were **unit tests(services) and E2E tests(endpoints)**.
 
 ---
 
@@ -73,6 +77,17 @@ api/
 ├── app.js
 ├── config/
 ├── src/
+│   ├── graphql/
+│   │    ├── resolvers/
+│   │    │   └── [entity]/   for example: animal/
+│   │    │        ├── animal.resolvers.js
+│   │    │        └── index.js
+│   │    ├── schemas/
+│   │    │   ├── animal.schemas.graphql
+│   │    │   └── [entity].schemas.graphql
+│   │    ├── resolvers.js (Centralization of resolvers)
+│   │    └── index.js
+│   │
 │   ├── middlewares/
 │   ├── utils/
 │   │   └── docs/
@@ -97,7 +112,7 @@ api/
 │   └── [ServiceName].test.js   # Ej: user-service.test.js
 │
 ├── e2e/
-│   └── [Entidad].e2e.js            # Ej: vaccination.e2e.js — all vaccination endpoints
+│   └── [entity].e2e.js            # Ej: vaccination.e2e.js — all vaccination endpoints
 ```
 
 - **MVC pattern** is followed per module/entity.
