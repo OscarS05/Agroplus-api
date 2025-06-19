@@ -1,0 +1,36 @@
+type Query {
+  vaccinations(query: queryVaccination): [Vaccination!]!
+  vaccination(id: UUID!): Vaccination!
+}
+
+type Mutation {
+  createVaccination(input: CreateVaccination!): Vaccination!
+  updateVaccination(id: UUID!, changes: UpdateVaccination!): Vaccination!
+  deleteVaccination(id: UUID!): Int!
+}
+
+type Vaccination {
+  id: UUID!
+  vaccine: String!
+  description: String
+  animal: AnimalSummaryResponse!
+  registeredAt: Date!
+}
+
+input queryVaccination {
+  animalId: UUID
+  vaccine: String
+  limit: Int
+  offset: Int
+}
+
+input CreateVaccination {
+  vaccine: String!
+  description: String
+  animalId: UUID!
+}
+
+input UpdateVaccination {
+  vaccine: String
+  description: String
+}

@@ -20,11 +20,17 @@ const formatVaccination = (vaccination) => {
 };
 
 const buildFilters = (query) => {
-  const { vaccine, animalId } = query;
+  const { vaccine, animalId, limit = 10, offset = 0 } = query;
 
-  return {
+  const where = {
     ...(vaccine && { vaccine: { [Op.iLike]: `%${vaccine}%` } }),
     ...(animalId && { animalId }),
+  };
+
+  return {
+    where,
+    limit: parseInt(limit, 10),
+    offset: parseInt(offset, 10),
   };
 };
 
@@ -89,7 +95,7 @@ const createVaccination = async (userId, vaccinationData) => {
     throw Boom.badRequest('Something went wrong creating the vaccination');
   }
 
-  return newVaccination;
+  return getVaccination(userId, newVaccination.id);
 };
 
 const updateVaccination = async (userId, vaccinationId, vaccinationData) => {
@@ -116,7 +122,7 @@ const updateVaccination = async (userId, vaccinationId, vaccinationData) => {
     throw Boom.badRequest('Something went wrong creating the vaccination');
   }
 
-  return updatedVaccination;
+  return getVaccination(userId, updatedVaccination.id);
 };
 
 const deleteVaccination = async (userId, vaccinationId) => {

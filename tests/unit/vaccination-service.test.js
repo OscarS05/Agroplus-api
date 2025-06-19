@@ -102,7 +102,7 @@ describe('Vaccination service', () => {
       );
       expect(vaccinationRepository.findAllVaccinations).toHaveBeenCalledWith(
         userId,
-        { animalId: query.animalId },
+        { where: { animalId: query.animalId }, limit: 10, offset: 0 },
       );
     });
 
@@ -203,13 +203,15 @@ describe('Vaccination service', () => {
     });
 
     test('It should return a new vaccination', async () => {
-      vaccinationRepository.create.mockResolvedValue({
+      const newVaccination = {
         ...dbResponse,
         id: fakeUuid,
         vaccine: vaccinationData.vaccine,
         description: vaccinationData.description,
-      });
+      };
+      vaccinationRepository.create.mockResolvedValue(newVaccination);
       animalRepository.findOne.mockResolvedValue(animal1());
+      vaccinationRepository.findOne.mockResolvedValue(newVaccination);
 
       const result = await createVaccination(userId, vaccinationData);
 
@@ -287,8 +289,9 @@ describe('Vaccination service', () => {
     });
 
     test('It should return an updated vaccination', async () => {
-      vaccinationRepository.findOne.mockResolvedValue(vaccination1());
+      vaccinationRepository.findOne.mockResolvedValueOnce(vaccination1());
       vaccinationRepository.update.mockResolvedValue([1, [dbResponse]]);
+      vaccinationRepository.findOne.mockResolvedValueOnce(dbResponse);
 
       const result = await updateVaccination(
         userId,
@@ -299,15 +302,16 @@ describe('Vaccination service', () => {
       expect(result.id).toBe(vaccinationId);
       expect(result.vaccine).toBe(vaccinationData.vaccine);
       expect(result.description).toBe(vaccinationData.description);
-      expect(vaccinationRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(vaccinationRepository.findOne).toHaveBeenCalledTimes(2);
       expect(vaccinationRepository.update).toHaveBeenCalledTimes(1);
     });
 
     test('It should return an updated vaccination with only name updated', async () => {
       delete vaccinationData.description;
 
-      vaccinationRepository.findOne.mockResolvedValue(vaccination1());
+      vaccinationRepository.findOne.mockResolvedValueOnce(vaccination1());
       vaccinationRepository.update.mockResolvedValue([1, [dbResponse]]);
+      vaccinationRepository.findOne.mockResolvedValueOnce(dbResponse);
 
       const result = await updateVaccination(
         userId,
@@ -318,7 +322,7 @@ describe('Vaccination service', () => {
       expect(result.id).toBe(vaccinationId);
       expect(result.vaccine).toBe(vaccinationData.vaccine);
       expect(result.description).not.toBe(vaccinationData.description);
-      expect(vaccinationRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(vaccinationRepository.findOne).toHaveBeenCalledTimes(2);
       expect(vaccinationRepository.update).toHaveBeenCalledTimes(1);
     });
 
