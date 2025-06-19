@@ -1,0 +1,34 @@
+type Query {
+  notes(query: QueryNote): [Note!]!
+  note(id: UUID!): Note!
+}
+
+type Mutation {
+  createNote(input: CreateNote!): Note!
+  updateNote(id: UUID!, changes: UpdateNote!): Note!
+  deleteNote(id: UUID!): Int!
+}
+
+type Note {
+  id: UUID!
+  title: String!
+  description: String
+  user: UserSummaryResponse!
+  createdAt: Date!
+}
+
+input QueryNote {
+  title: String
+  limit: Int
+  offset: Int
+}
+
+input CreateNote {
+  title: String!
+  description: String
+}
+
+input UpdateNote {
+  title: String
+  description: String
+}

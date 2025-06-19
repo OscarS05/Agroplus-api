@@ -5,7 +5,7 @@ const getAllNotes = async (req, res, next) => {
     const { query } = req;
     const userId = req.user.sub;
 
-    const notes = await notesService.getAllNotes({ ...query, userId });
+    const notes = await notesService.getAllNotes(userId, query);
 
     res.status(200).json({ notes });
   } catch (error) {
@@ -18,7 +18,7 @@ const createNote = async (req, res, next) => {
     const noteData = req.body;
     const userId = req.user.sub;
 
-    const note = await notesService.createNote({ ...noteData, userId });
+    const note = await notesService.createNote(userId, noteData);
 
     const formattedNoteData = await notesService.getNote(userId, note.id);
 

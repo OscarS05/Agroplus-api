@@ -29,8 +29,8 @@ const buildFilters = (query) => {
 
   return {
     where,
-    limit: parseInt(limit, 10),
-    offset: parseInt(offset, 10),
+    limit: limit ?? parseInt(limit, 10),
+    offset: offset ?? parseInt(offset, 10),
   };
 };
 

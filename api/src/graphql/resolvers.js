@@ -18,6 +18,10 @@ const {
   query: vaccinationQueries,
   mutation: vaccinationMutation,
 } = require('./resolvers/vaccination/index');
+const {
+  query: noteQueries,
+  mutation: noteMutation,
+} = require('./resolvers/note/index');
 
 const resolvers = {
   Query: {
@@ -27,12 +31,14 @@ const resolvers = {
     ...animalQueries,
     ...dewormingQueries,
     ...vaccinationQueries,
+    ...noteQueries,
   },
   Mutation: {
     ...userMutations,
     ...animalMutation,
     ...dewormingMutation,
     ...vaccinationMutation,
+    ...noteMutation,
   },
 
   NameType,

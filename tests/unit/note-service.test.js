@@ -44,9 +44,7 @@ describe('Note service', () => {
     Op.iLike.mockResolvedValue('Operation');
 
     beforeEach(() => {
-      query = {
-        userId,
-      };
+      query = {};
     });
 
     test('It should return filtered notes by userId', async () => {
@@ -55,7 +53,7 @@ describe('Note service', () => {
         dbResponse[1],
       ]);
 
-      const result = await getAllNotes(query);
+      const result = await getAllNotes(userId, query);
 
       expect(result).toHaveLength(2);
       expect(result[0]).toMatchObject(
@@ -67,16 +65,18 @@ describe('Note service', () => {
       );
 
       expect(noteRepository.findAllNotes).toHaveBeenCalledTimes(1);
-      expect(noteRepository.findAllNotes).toHaveBeenCalledWith(
-        expect.objectContaining({ userId }),
-      );
+      expect(noteRepository.findAllNotes).toHaveBeenCalledWith(userId, {
+        limit: 10,
+        offset: 0,
+        where: query,
+      });
     });
 
     test('It should return filtered notes by title', async () => {
       query.title = 'note 2';
       noteRepository.findAllNotes.mockResolvedValue([dbResponse[1]]);
 
-      const result = await getAllNotes(query);
+      const result = await getAllNotes(userId, query);
 
       expect(result).toHaveLength(1);
       expect(result[0]).toMatchObject(
@@ -88,14 +88,15 @@ describe('Note service', () => {
 
       expect(noteRepository.findAllNotes).toHaveBeenCalledTimes(1);
       expect(noteRepository.findAllNotes).toHaveBeenCalledWith(
-        expect.objectContaining({ userId, title: expect.any(Object) }),
+        userId,
+        expect.objectContaining({ where: { title: expect.any(Object) } }),
       );
     });
 
     test('It should return an empty array if no notes are found', async () => {
       noteRepository.findAllNotes.mockResolvedValue([]);
 
-      const result = await getAllNotes(query);
+      const result = await getAllNotes(userId, query);
 
       expect(result).toEqual([]);
       expect(noteRepository.findAllNotes).toHaveBeenCalledTimes(1);
@@ -175,14 +176,16 @@ describe('Note service', () => {
     });
 
     test('It should return a new note', async () => {
-      noteRepository.create.mockResolvedValue({
+      const newNote = {
         ...dbResponse,
         id: fakeUuid,
         title: noteData.title,
         description: null,
-      });
+      };
+      noteRepository.create.mockResolvedValue(newNote);
+      noteRepository.findOne.mockResolvedValueOnce(newNote);
 
-      const result = await createNote(noteData);
+      const result = await createNote(userId, noteData);
 
       expect(result.id).toBe(fakeUuid);
       expect(result.title).toBe(noteData.title);
@@ -213,7 +216,7 @@ describe('Note service', () => {
     test('It should return an error because the db failed', async () => {
       noteRepository.create.mockResolvedValue(null);
 
-      await expect(createNote(noteData)).rejects.toThrow(
+      await expect(createNote(userId, noteData)).rejects.toThrow(
         /Something went wrong/,
       );
       expect(noteRepository.create).toHaveBeenCalledTimes(1);
@@ -239,15 +242,16 @@ describe('Note service', () => {
     });
 
     test('It should return an updated note', async () => {
-      noteRepository.findOne.mockResolvedValue(note1());
+      noteRepository.findOne.mockResolvedValueOnce(note1());
       noteRepository.update.mockResolvedValue([1, [dbResponse]]);
+      noteRepository.findOne.mockResolvedValueOnce(dbResponse);
 
       const result = await updateNote(userId, noteId, noteData);
 
       expect(result.id).toBe(noteId);
       expect(result.title).toBe(noteData.title);
       expect(result.description).toBe(noteData.description);
-      expect(noteRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(noteRepository.findOne).toHaveBeenCalledTimes(2);
       expect(noteRepository.update).toHaveBeenCalledTimes(1);
     });
 

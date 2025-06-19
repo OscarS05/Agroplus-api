@@ -1,0 +1,1290 @@
+type: spec.insomnia.rest/5.0
+name: agroplus
+meta:
+  id: wrk_4264e90551c04f93907d67b9733de517
+  created: 1744504861024
+  modified: 1744504861024
+  description: ""
+collection:
+  - name: GraphQL
+    meta:
+      id: fld_3aa352be165b4b17b6d2f77e8d1fec83
+      created: 1750291290286
+      modified: 1750291290286
+      sortKey: -1750291290287
+      description: ""
+    children:
+      - name: user
+        meta:
+          id: fld_a0ec73cb987d4f86bf2bb5f8556b5860
+          created: 1750355099594
+          modified: 1750355099594
+          sortKey: -1750355099594
+          description: ""
+        children:
+          - url: "{{ _.graphql }}"
+            name: queries
+            meta:
+              id: req_269313af250f4427952dd977df62b0b8
+              created: 1750291293584
+              modified: 1750355958849
+              isPrivate: false
+              description: ""
+              sortKey: -1750355105880
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"query userQueries {\n  users(query: {limit: 2, offset: 0})
+                {\n    id\n    name\n    email\n  }\n\tuser(email:
+                \"oscar@email.com\"){\n\t\tid\n\t\tname\n\t\temail\n\t}\n}","operationName":"userQueries"}'
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: login
+            meta:
+              id: req_e560d6f191d04317b5c11bf755902fd6
+              created: 1750355208579
+              modified: 1750355991645
+              isPrivate: false
+              description: ""
+              sortKey: -1750355208579
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation login($email: EmailAddress!, $password: String!)
+                {\n\tlogin(email: $email, password: $password){\n\t\tuser
+                {\n\t\t\tid\n\t\t\temail\n\t\t}\n\t\taccessToken\n\t}\n}","operationName":"login","variables":"{\n\t\"email\":
+                \"oscar@email.com\",\n\t\"password\": \"O123456@k\"\n}"}'
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: signUp
+            meta:
+              id: req_943522208e4441448864f9b2fbb8cbbd
+              created: 1750355994771
+              modified: 1750356140608
+              isPrivate: false
+              description: ""
+              sortKey: -1750355994771
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation signUp($name: NameType!, $email: EmailAddress!,
+                $password: PasswordType!){\n\tuser: signUp(name: $name, email:
+                $email, password:
+                $password){\n\t\tid\n\t\temail\n\t\tname\n\t}\n}","operationName":"signUp","variables":"{\n\t\"name\":
+                \"user\",\n\t\"email\": \"user1@email.com\",\n\t\"password\":
+                \"O123456@k,\"\n}"}'
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.2.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: animal
+        meta:
+          id: fld_dfad91b2ee9746ceafe743b0d757cae1
+          created: 1750356166186
+          modified: 1750356166186
+          sortKey: -1750356166186
+          description: ""
+        children:
+          - url: "{{ _.graphql }}"
+            name: animalQuery
+            meta:
+              id: req_862d75877276456c865a5ab8315577e5
+              created: 1750356183667
+              modified: 1750356513825
+              isPrivate: false
+              description: ""
+              sortKey: -1750356183667
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"query animalQuery($filters: AnimalFilter) {\n  animals(filters:
+                $filters) {\n    id\n    code\n    sex\n    user
+                {\n      id\n      name\n    }\n    mother\n    father\n  }\n  animal(id:
+                \"47e5a0c4-5486-4664-9322-740414cf3f89\")
+                {\n    id\n    code\n  }\n}","operationName":"animalQuery","variables":"{\n\t\"filters\":
+                {\n\t\t\"limit\": 2,\n\t\t\"offset\": 0\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: createAnimal
+            meta:
+              id: req_7690e1d49c094cd5b1327bdea62a44fe
+              created: 1750356408556
+              modified: 1750356590523
+              isPrivate: false
+              description: ""
+              sortKey: -1750356408556
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation createAnimal($input:
+                CreateAnimal!){\n  createAnimal(input: $input)
+                {\n    id\n    code\n    sex\n    user
+                {\n      name\n    }\n    mother\n    father\n  }\n}","operationName":"createAnimal","variables":"{\n  \"input\":
+                {\n    \"code\": \"BBB-001\",\n    \"animalType\":
+                \"Cow\",\n    \"livestockType\": \"Bovine\",\n    \"breed\":
+                \"Angus\",\n    \"sex\": \"Female\"\n  }\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: updateAnimal
+            meta:
+              id: req_90a37c4291794ca0b01a18f7ae49f4db
+              created: 1750356592532
+              modified: 1750356642643
+              isPrivate: false
+              description: ""
+              sortKey: -1750356592532
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation updateAnimal($id: UUID!, $changes:
+                UpdateAnimal){\n  animal: updateAnimal(id: $id, changes:
+                $changes) {\n    id\n    code\n    sex\n    user
+                {\n      name\n    }\n    mother\n    father\n  }\n}","operationName":"updateAnimal","variables":"{\n\t\"id\":
+                \"71ac016d-5d63-4493-a092-d5e7decbc467\",\n\t\"changes\":
+                {\n\t\t\"code\": \"AAA-111\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: deleteAnimal
+            meta:
+              id: req_1190f1c805c142aa8ab2008bfce43e62
+              created: 1750356644851
+              modified: 1750356748028
+              isPrivate: false
+              description: ""
+              sortKey: -1750356644851
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation deleteAnimal {\n  deleteAnimal(id:
+                \"3a229e08-f715-4df1-99eb-006076df741f\")\n}","operationName":"deleteAnimal"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: deworming
+        meta:
+          id: fld_11d5a40817364d02b3b72a9919bc0365
+          created: 1750360766084
+          modified: 1750360766084
+          sortKey: -1750360766084
+          description: ""
+        children:
+          - url: "{{ _.graphql }}"
+            name: query
+            meta:
+              id: req_e4f70662109d4b37b12e0f62544c1c7a
+              created: 1750360756760
+              modified: 1750372825126
+              isPrivate: false
+              description: ""
+              sortKey: -1750360780895
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"query dewormingQuery($query: queryDeworming)
+                {\n  dewormings(query: $query)
+                {\n    id\n    dewormer\n    description\n    animal
+                {\n      id\n      code\n    }\n  }\n  deworming(id:
+                \"ae8b67a7-0dff-4c35-b595-29a698dde250\")
+                {\n    id\n    dewormer\n    description\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"dewormingQuery","variables":"{\n  \"query\":
+                {\n    \"limit\": 2,\n    \"offset\": 0\n  }\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: createDeworming
+            meta:
+              id: req_ea49e069097c42d180b99a8e50d54a25
+              created: 1750367607193
+              modified: 1750372799209
+              isPrivate: false
+              description: ""
+              sortKey: -1750367607193
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation createDeworming($input:
+                CreateDeworming!){\n  createDeworming(input: $input)
+                {\n    id\n    dewormer\n    description\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"createDeworming","variables":"{\n\t\"input\":
+                {\n\t\t\"dewormer\": \"Dewormer z\",\n\t\t\"animalId\":
+                \"47e5a0c4-5486-4664-9322-740414cf3f89\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: updateDeworming
+            meta:
+              id: req_009d1e999b19403db68cf45a40ba9545
+              created: 1750368493737
+              modified: 1750372900216
+              isPrivate: false
+              description: ""
+              sortKey: -1750368493737
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation updateDeworming($id: UUID!, $changes:
+                UpdateDeworming!){\n  deworming: updateDeworming(id: $id,
+                changes: $changes) {\n    id\n    dewormer\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"updateDeworming","variables":"{\n\t\"id\":
+                \"ae8b67a7-0dff-4c35-b595-29a698dde250\",\n\t\"changes\":
+                {\n\t\t\"dewormer\": \"Dewormer-z\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: deleteDeworming
+            meta:
+              id: req_024a62ee2f514a2a9ba80e8a03a112af
+              created: 1750368616844
+              modified: 1750372924039
+              isPrivate: false
+              description: ""
+              sortKey: -1750368616844
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation deleteDeworming {\n  deleteDeworming(id:
+                \"dbf89906-efc2-40fe-83be-97ed6310b77a\")\n}","operationName":"deleteDeworming"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: vaccination
+        meta:
+          id: fld_32ca65162460443a81ce0785b3e0b2cf
+          created: 1750370068637
+          modified: 1750370073246
+          sortKey: -1750360766184
+          description: ""
+        children:
+          - url: "{{ _.graphql }}"
+            name: query
+            meta:
+              id: req_f5d9df7a96c0495eb6d0db824e8874a8
+              created: 1750370068639
+              modified: 1750373301949
+              isPrivate: false
+              description: ""
+              sortKey: -1750360780895
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"query vaccinationQuery($query: queryVaccination)
+                {\n  vaccinations(query: $query)
+                {\n    id\n    vaccine\n    description\n    animal
+                {\n      id\n      code\n    }\n  }\n  vaccination(id:
+                \"69eb0960-5c7c-4078-8679-bda1bb027d49\")
+                {\n    id\n    vaccine\n    description\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"vaccinationQuery","variables":"{\n\t\"query\":
+                {\n\t\t\"limit\": 2,\n\t\t\"offset\": 0\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: createVaccination
+            meta:
+              id: req_abc482b49bb84e968f987ce4fae0f27a
+              created: 1750370068643
+              modified: 1750373010553
+              isPrivate: false
+              description: ""
+              sortKey: -1750367607193
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation createVaccination($input:
+                CreateVaccination!){\n  createVaccination(input: $input)
+                {\n    id\n    vaccine\n    description\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"createVaccination","variables":"{\n\t\"input\":
+                {\n\t\t\"vaccine\": \"Vaccine dfe\",\n\t\t\"animalId\":
+                \"71ac016d-5d63-4493-a092-d5e7decbc467\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: updateVaccination
+            meta:
+              id: req_445bf04b91d14ea6a2fb275167c40a41
+              created: 1750370068645
+              modified: 1750373313539
+              isPrivate: false
+              description: ""
+              sortKey: -1750368493737
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation updateVaccination($id: UUID!, $changes:
+                UpdateVaccination!){\n  vaccination: updateVaccination(id: $id,
+                changes: $changes) {\n    id\n    vaccine\n    animal
+                {\n      code\n    }\n  }\n}","operationName":"updateVaccination","variables":"{\n\t\"id\":
+                \"69eb0960-5c7c-4078-8679-bda1bb027d49\",\n\t\"changes\":
+                {\n\t\t\"vaccine\": \"vaccine-12345\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: deleteVaccination
+            meta:
+              id: req_eafa54d9a449453c8d371972ac1c3399
+              created: 1750370068649
+              modified: 1750373330974
+              isPrivate: false
+              description: ""
+              sortKey: -1750368616844
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation deleteVaccination {\n  deleteVaccination(id:
+                \"45fe1b07-c30a-4160-92fd-92ce0f24dcf5\")\n}","operationName":"deleteVaccination"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: note
+        meta:
+          id: fld_cf22fea9f460401d8169b77bd23aeb79
+          created: 1750372663021
+          modified: 1750372663021
+          sortKey: -1750360766134
+          description: ""
+        children:
+          - url: "{{ _.graphql }}"
+            name: query
+            meta:
+              id: req_51136344eb9c48bf8dbbad3c30570805
+              created: 1750372663023
+              modified: 1750373378631
+              isPrivate: false
+              description: ""
+              sortKey: -1750360780895
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"query noteQuery($query: QueryNote) {\n  notes(query: $query)
+                {\n    id\n    title\n    description\n    user {\n     name
+                \n    }\n  }\n  note(id:
+                \"57dfc9f5-b9c2-4de7-afdf-b42bf2600c35\")
+                {\n    id\n    title\n    description\n    user {\n     name
+                \n    }\n  }\n}","operationName":"noteQuery","variables":"{\n  \"query\":
+                {\n    \"limit\": 2,\n    \"offset\": 0\n  }\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: createVaccination
+            meta:
+              id: req_8ddb4a387d3c4f09846f8d017242abe8
+              created: 1750372663025
+              modified: 1750373367422
+              isPrivate: false
+              description: ""
+              sortKey: -1750367607193
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation createNote($input: CreateNote!){\n  createNote(input:
+                $input) {\n    id\n    title\n    description\n    user
+                {\n     name
+                \n    }\n  }\n}","operationName":"createNote","variables":"{\n\t\"input\":
+                {\n\t\t\"title\": \"title dfe\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: updateVaccination
+            meta:
+              id: req_83beda62784a4fefb362df0c54703bc3
+              created: 1750372663028
+              modified: 1750373401658
+              isPrivate: false
+              description: ""
+              sortKey: -1750368493737
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation updateNote($id: UUID!, $changes:
+                UpdateNote!){\n  note: updateNote(id: $id, changes: $changes)
+                {\n    id\n    title\n    description\n    user {\n     name
+                \n    }\n  }\n}","operationName":"updateNote","variables":"{\n\t\"id\":
+                \"57dfc9f5-b9c2-4de7-afdf-b42bf2600c35\",\n\t\"changes\":
+                {\n\t\t\"title\": \"title-12345\",\n\t\t\"description\":
+                \"some-description\"\n\t}\n}"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.graphql }}"
+            name: deleteVaccination
+            meta:
+              id: req_df98811fccfb47488751affce19fc2f7
+              created: 1750372663030
+              modified: 1750373428984
+              isPrivate: false
+              description: ""
+              sortKey: -1750368616844
+            method: POST
+            body:
+              mimeType: application/graphql
+              text: '{"query":"mutation deleteNote {\n  deleteNote(id:
+                \"9a317f08-371a-4427-95dd-abb8fffe8704\")\n}","operationName":"deleteNote"}'
+            headers:
+              - name: User-Agent
+                value: insomnia/11.2.0
+              - name: Content-Type
+                value: application/json
+            authentication:
+              type: bearer
+              token: "{{ _.accessToken }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: REST
+    meta:
+      id: fld_ef6518ddc48b42ac8cdce5096a86fe97
+      created: 1750373453767
+      modified: 1750373482650
+      sortKey: -1744504886336
+      description: ""
+    children:
+      - name: users
+        meta:
+          id: fld_8feded3966af4ea8bac5144072fc6f1c
+          created: 1744504884188
+          modified: 1750373489727
+          sortKey: -1750373489703
+          description: ""
+        children:
+          - url: "{{ _.api }}/v1/users/"
+            name: get user
+            meta:
+              id: req_46fcf1125e5a452caa95dfdbc4d5eb92
+              created: 1744504915237
+              modified: 1749666197054
+              isPrivate: false
+              description: ""
+              sortKey: -1744504915237
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/auth/sign-up"
+            name: sign up
+            meta:
+              id: req_0781312ce5434541b99e1c3c6f51f8c2
+              created: 1744504921561
+              modified: 1744771261812
+              isPrivate: false
+              description: ""
+              sortKey: -1744504921561
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"email": "admin@email.com",
+                	"name": "admin name",
+                	"password": "O123456@k"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/auth/login"
+            name: login
+            meta:
+              id: req_91838301c8524c14954193868d379fb1
+              created: 1744504948388
+              modified: 1750350208396
+              isPrivate: false
+              description: ""
+              sortKey: -1744504927512
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"email": "oscar@email.com",
+                	"password": "O123456@k"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/users/"
+            name: get users
+            meta:
+              id: req_b65eb12c60d44b61b90d4db584adae94
+              created: 1744568298961
+              modified: 1750291271068
+              isPrivate: false
+              description: ""
+              sortKey: -1744413466456.5
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: animals
+        meta:
+          id: fld_c314e9694a5c4115b8824dbe6b872988
+          created: 1744504888484
+          modified: 1750373495315
+          sortKey: -1750373489803
+          description: ""
+        children:
+          - url: "{{ _.api }}/v1/animals?breed=angus"
+            name: get all animals
+            meta:
+              id: req_941e3c574d8946f2a43092812e57a926
+              created: 1744591572902
+              modified: 1749746319402
+              isPrivate: false
+              description: ""
+              sortKey: -1744591572902
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/"
+            name: create animal
+            meta:
+              id: req_3731175034ab4e55bbf6aa7f87c46382
+              created: 1744591574430
+              modified: 1749666349384
+              isPrivate: false
+              description: ""
+              sortKey: -1744591574430
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"livestockType": "Bovino",
+                  "animalType": "Vaca",
+                  "code": "BOV-001",
+                  "breed": "Angus",
+                  "sex": "Female"
+                	}
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/eeb5ffa5-b439-48a1-9826-b1a566e28a3f"
+            name: update animal
+            meta:
+              id: req_80bc6b5cd899488cbe41cd05167bcfab
+              created: 1744591575511
+              modified: 1744772945503
+              isPrivate: false
+              description: ""
+              sortKey: -1744591575511
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"livestockType": "Bovino",
+                  "animalType": "Vaca",
+                  "code": "BAV-111",
+                  "breed": "Angus"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/eeb5ffa5-b439-48a1-9826-b1a566e28a3f"
+            name: delete animal
+            meta:
+              id: req_1b632b533d114b778e94fd1ad707098b
+              created: 1744591576623
+              modified: 1744772970842
+              isPrivate: false
+              description: ""
+              sortKey: -1744591576623
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: deworming
+        meta:
+          id: fld_f1e8e302c37f4e43895c09f092643182
+          created: 1744680834668
+          modified: 1750373496970
+          sortKey: -1750373489903
+          description: ""
+        children:
+          - url: "{{ _.api }}/v1/animals/deworming"
+            name: get all deworming
+            meta:
+              id: req_9a4953b924b643fb8900d26b2e9a98da
+              created: 1744680834671
+              modified: 1750360922945
+              isPrivate: false
+              description: ""
+              sortKey: -1744591572902
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/6a61f88f-34e2-4863-b55b-ef81b9166250/deworming"
+            name: create deworming
+            meta:
+              id: req_4f9c81280b7c41bf80769f0701f64b79
+              created: 1744680834673
+              modified: 1749666484716
+              isPrivate: false
+              description: ""
+              sortKey: -1744591574430
+            method: POST
+            body:
+              mimeType: application/json
+              text: >
+                {
+                  "dewormer": "Dewormer 1%",
+                  "description": "Aplicación subcutánea para control de parásitos internos y externos."
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/deworming/04dbe255-50de-4ae1-8058-e101890f09f0"
+            name: update deworming
+            meta:
+              id: req_22e4795e71224acd85c31aaacb32021c
+              created: 1744680834675
+              modified: 1744773340177
+              isPrivate: false
+              description: ""
+              sortKey: -1744591575511
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "dewormer": "Ivermectin 3%",
+                  "description": "Actualizado"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/deworming/4"
+            name: delete deworming
+            meta:
+              id: req_48a7afaac1f44909a604d44dca02f3c2
+              created: 1744680834677
+              modified: 1744767562152
+              isPrivate: false
+              description: ""
+              sortKey: -1744591576623
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: vaccination
+        meta:
+          id: fld_1c8dd4f6009a41b795e76daf15a41086
+          created: 1744685975987
+          modified: 1750373498263
+          sortKey: -1750373490003
+          description: ""
+        children:
+          - url: "{{ _.api }}/v1/animals/vaccination?vaccine=Ivermec"
+            name: get all vaccination
+            meta:
+              id: req_f2a906e4183a4895b6aaf6bd56b640b4
+              created: 1744685975989
+              modified: 1749679104585
+              isPrivate: false
+              description: ""
+              sortKey: -1744591572902
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/6a61f88f-34e2-4863-b55b-ef81b9166250/vaccination/"
+            name: create vaccination
+            meta:
+              id: req_617bd7208296453bb4933bc86f294053
+              created: 1744685976011
+              modified: 1749679073750
+              isPrivate: false
+              description: ""
+              sortKey: -1744591574430
+            method: POST
+            body:
+              mimeType: application/json
+              text: |
+                {
+                  "vaccine": "Vaccine %",
+                  "description": "Description 1."
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/vaccination/065f441b-64ba-411a-97d1-7cbf15443732"
+            name: update vaccination
+            meta:
+              id: req_71449e44cece4907b4d481c71e1dc02d
+              created: 1744685976013
+              modified: 1744773548216
+              isPrivate: false
+              description: ""
+              sortKey: -1744591575511
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "vaccine": "Ivermectin 0.5%",
+                  "description": "Updated"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/animals/vaccination/4"
+            name: delete vaccination
+            meta:
+              id: req_032f1c379f644b5b8b822afc116157ea
+              created: 1744685976015
+              modified: 1744768126064
+              isPrivate: false
+              description: ""
+              sortKey: -1744591576623
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: notes
+        meta:
+          id: fld_eb75fc6e865e4bd7a24ee3d2fa0dc062
+          created: 1744768398391
+          modified: 1750373500483
+          sortKey: -1750373490103
+          description: ""
+        children:
+          - url: "{{ _.api }}/v1/notes?title=vacas"
+            name: get all notes
+            meta:
+              id: req_a6b4023a23f145b6816fe1f95e0758ec
+              created: 1744768398392
+              modified: 1749682480993
+              isPrivate: false
+              description: ""
+              sortKey: -1744591572902
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/notes"
+            name: create note
+            meta:
+              id: req_6c4a288ae2cd45f6b6de8c407261df9d
+              created: 1744768398393
+              modified: 1749682256695
+              isPrivate: false
+              description: ""
+              sortKey: -1744591574430
+            method: POST
+            body:
+              mimeType: application/json
+              text: >
+                {
+                  "title": "Falta desparasitar cerdos",
+                  "description": "Los cerdos que hay que purgar son: ..., ..., ..., ... ."
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/notes/f42db923-7c41-4b11-ba2e-dbf7638cacae"
+            name: update note
+            meta:
+              id: req_0dea0e4b8ae64367b448bdd528f35572
+              created: 1744768398394
+              modified: 1744773725342
+              isPrivate: false
+              description: ""
+              sortKey: -1744591575511
+            method: PATCH
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "title": "Desparasitación de cerdos:",
+                  "description": "tuki, tuki, tuki."
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.api }}/v1/notes/1"
+            name: delete note
+            meta:
+              id: req_6c7ee303fc4b44cf99de7c5240bfb0ac
+              created: 1744768398395
+              modified: 1744768438613
+              isPrivate: false
+              description: ""
+              sortKey: -1744591576623
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.0.2
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b1c3334de9e93c0130fb529317de92072918de5b
+    created: 1744504861030
+    modified: 1750367681769
+  cookies:
+    - key: accessToken
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTQ0NDE5Zi02OGQ1LTQxMTktYWM5Ni0yZTA3MWU2MzVjYTMiLCJyb2xlIjoiYmFzaWMiLCJpYXQiOjE3NTAzNjc2ODEsImV4cCI6MTc1MTY2MzY4MX0.21MQVXh93iLSxq8RJox4SKNSLJLukOz1n9iH8jWoWPI
+      maxAge: 3600
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-04-14T01:15:06.662Z
+      lastAccessed: 2025-06-19T21:14:41.768Z
+      sameSite: lax
+      id: 05cd0907-fd85-46c5-ac39-a22ff71c0fcc
+environments:
+  name: Base Environment
+  meta:
+    id: env_b1c3334de9e93c0130fb529317de92072918de5b
+    created: 1744504861028
+    modified: 1744505117198
+    isPrivate: false
+  data:
+    "": ""
+  subEnvironments:
+    - name: Develop
+      meta:
+        id: env_a6e5cdbd11ec496da4f5a56c6f449b16
+        created: 1744505097192
+        modified: 1750372862491
+        isPrivate: false
+        sortKey: 1744505097192
+      data:
+        api: localhost:4000/api
+        graphql: localhost:4000/graphql
+        accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOTQ0NDE5Zi02OGQ1LTQxMTktYWM5Ni0yZTA3MWU2MzVjYTMiLCJyb2xlIjoiYmFzaWMiLCJpYXQiOjE3NTAzNzI4NTIsImV4cCI6MTc1MTY2ODg1Mn0.UOb32z6rd8zdC-z69V8G_wKfjLgJZKipNIUbHKERjZg
+      color: "#22ff1f"
+spec:
+  meta:
+    id: spc_2863130a0bc64aa0a72ae293fbb16c48
+    created: 1744504861026
+    modified: 1744687139554

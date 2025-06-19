@@ -15,25 +15,28 @@ const formatNotes = (note) => {
 };
 
 const buildFilters = (query) => {
-  const { title, userId } = query;
+  const { title, limit = 10, offset = 0 } = query;
+
+  const where = {
+    ...(title && { title: { [Op.iLike]: `%${title}%` } }),
+  };
 
   return {
-    ...(title && { title: { [Op.iLike]: `%${title}%` } }),
-    ...(userId && { userId }),
+    where,
+    limit: limit ?? parseInt(limit, 10),
+    offset: offset ?? parseInt(offset, 10),
   };
 };
 
-const getAllNotes = async (query) => {
+const getAllNotes = async (userId, query) => {
   if (!query || typeof query !== 'object') {
     throw Boom.badRequest('query was not provided');
   }
-  if (!query?.userId) {
-    throw Boom.badData('userId was not provided');
-  }
+  if (!userId) throw Boom.badData('userId was not provided');
 
   const filters = buildFilters(query);
 
-  const notes = await noteRepository.findAllNotes(filters);
+  const notes = await noteRepository.findAllNotes(userId, filters);
   if (!notes?.length === 0) return [];
 
   return notes.map((note) => formatNotes(note));
@@ -49,10 +52,8 @@ const getNote = async (userId, noteId) => {
   return formatNotes(note);
 };
 
-const createNote = async (noteData) => {
-  if (!noteData?.userId) {
-    throw Boom.badRequest('userId was not provided');
-  }
+const createNote = async (userId, noteData) => {
+  if (!userId) throw Boom.badRequest('userId was not provided');
   if (!noteData?.title && !noteData?.description) {
     throw Boom.badRequest('noteData was not provided');
   }
@@ -61,7 +62,7 @@ const createNote = async (noteData) => {
     id: uuidv4(),
     title: noteData.title,
     description: noteData?.description || null,
-    userId: noteData.userId,
+    userId,
     createdAt: noteData.createdAt || new Date().toISOString().split('T')[0],
   };
 
@@ -70,7 +71,7 @@ const createNote = async (noteData) => {
     throw Boom.badRequest('Something went wrong creating the note');
   }
 
-  return newnote;
+  return getNote(note.userId, newnote.id);
 };
 
 const updateNote = async (userId, noteId, noteData) => {
@@ -97,7 +98,7 @@ const updateNote = async (userId, noteId, noteData) => {
     throw Boom.badRequest('Something went wrong creating the note');
   }
 
-  return updatedNote;
+  return getNote(updatedNote.userId, updatedNote.id);
 };
 
 const deleteNote = async (userId, noteId) => {
